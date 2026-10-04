@@ -1,0 +1,124 @@
+---
+title: "RExercise#2_dequito"
+author: "Yanna Dawn Dequito"
+date: "2026-09-30"
+output: html_document
+---
+
+## Part A - Arithmetic Operations
+
+```{r}
+a <- 17
+b <- 5
+
+a + b
+a - b
+a * b
+a / b
+
+a %% b
+a %/% b
+
+2^10
+
+```
+
+**Question #1:** The normal division `17 / 5` gives the exact decimal answer, which is 3.4. The integer division `17 %/% 5` shows how many whole times 5 fits into 17, which is 3. The modulus `17 %% 5` gives the remainder of 2. Together, 5 times 3 plus the remainder 2 equals 17.
+
+**Question #2:** I predicted `10 %% 3` would be 1 and `10 %/% 3` would be 3. I was correct because 3 goes into 10 exactly 3 times, leaving a remainder of 1.
+
+## Part B - Basic Data Types
+
+```{r}
+x <- 42
+y <- 42L
+z <- "42"
+w <- TRUE
+v <- 3 + 2i
+
+typeof(x)
+typeof(y)
+typeof(z)
+typeof(w)
+typeof(v)
+
+class(x)
+class(y)
+class(z)
+class(w)
+class(v)
+
+mode(x)
+mode(y)
+mode(z)
+mode(w)
+mode(v)
+
+```
+
+**Question #3:** `x <- 42` is stored as a "double" because R saves numbers as decimals by default. `y <- 42L` has an "L" at the end, which tells R to strictly save it as an "integer" instead.
+
+**Question #4:** Yes, they can be different. For example, with `x <- 42`, `typeof(x)` says it is a "double", but `class(x)` and `mode(x)` say it is "numeric". The `typeof()` function gives the specific storage type, while the others are more general categories.
+
+## Part C - Type Conversion
+
+```{r}
+num_string <- "123"
+num_val <- as.numeric(num_string)
+typeof(num_val)
+class(num_val)
+mode(num_val)
+
+as.logical(0)
+as.logical(1)
+
+bad_string <- "hello123"
+as.numeric(bad_string)
+
+```
+
+**Question #5:** R gives a warning and outputs `NA` instead of crashing so that the rest of our script can still run. The risk of ignoring these warnings is that the `NA` will secretly mess up our math calculations later on without us noticing.
+
+**Question #6:** I think `as.logical(2)` and `as.logical(-1)` will both produce `TRUE`. After testing it, I see R follows a simple rule: the number 0 is `FALSE`, and every other number (positive or negative) becomes `TRUE`.
+
+## Part D - Strings, paste(), and paste0()
+
+```{r}
+first_name <- "Yanna Dawn"
+last_name <- "Dequito"
+
+print(first_name)
+print(last_name)
+cat(first_name, last_name, "\n")
+
+full_name <- paste(first_name, last_name)
+full_name
+paste0(first_name, last_name)
+
+paste(first_name, last_name, sep = "-")
+
+age <- 21
+paste0(full_name, " is ", age, " years old.")
+
+```
+
+**Question #7:** The `paste()` function automatically adds a space between the words, while `paste0()` connects the words directly together with no spaces at all.
+
+**Question #8:** It didn't cause an error because `paste0()` automatically converts the number `age` into a character string before putting it in the sentence, which is similar to using `as.character()`.
+
+## Part E - Critical Thinking Challenge
+
+```{r}
+# Trying to run "5" + 5 gives a non-numeric argument error.
+# Here is the fixed code using a conversion function:
+as.numeric("5") + 5
+
+```
+
+**Question #9:** R requires us to convert it manually because it is a language made for strict math and statistics. It doesn't want to guess if we meant to add the numbers to get 10 or combine the text to get "55".
+
+**Question #10:** The problem is probably that R read the numbers from the text file as character strings. To fix this, I would check the column type using `typeof()`. Then, I would use `as.numeric()` to convert the column into real numbers, check for any warnings, and finally try the `sum()` function again.
+
+## Conclusion
+
+In this lab, I learned how R categorizes data into different types and how to check them using functions like `typeof()` and `class()`. I also learned how to combine strings with `paste()` and `paste0()`, and how to manually convert data types so my math calculations don't throw errors. Understanding this is important so we can prepare and clean our data correctly before analyzing it.
