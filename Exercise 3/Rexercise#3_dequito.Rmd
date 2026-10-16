@@ -1,0 +1,164 @@
+---
+title: "RExercise#3_dequito"
+author: "Yanna Dawn Dequito"
+date: "2026-10-16"
+output: html_document
+---
+
+## Part A — Creating Vectors: c(), seq(), rep()
+
+```{r}
+scores <- c(88, 92, 79, 95, 84)
+subjects <- c("Math", "Science", "English", "History", "PE")
+
+odds <- seq(1, 19, by = 2)
+evenly_spaced <- seq(0, 1, length.out = 5)
+
+rep("A", times = 4)
+rep(c("A", "B"), each = 2)
+rep(c("A", "B"), times = 2)
+
+
+```
+
+```{r}
+age <- c(15, 28, 32, 36, 27, 18, 52, 39, 42, 29, 35, 31, 27, 22, 37, 34, 19, 20, 57, 49, 50, 37, 46, 25, 17, 12, 42, 53, 41, 51, 35, 24, 33, 8)
+
+length(age)
+1 / age
+new_age <- c(age, 0, age)
+min(age)
+max(age)
+
+
+```
+
+Question #1: For 1c, `new_age` becomes one really long vector. It puts all the ages, then a 0 in the middle, and then all the ages again.
+
+Question #2: `each` repeats every single letter before moving to the next one (like A, A, B, B). But `times` takes the whole group and repeats it all together (like A, B, A, B).
+
+Question #3: `by` controls the counting steps, like counting by 2s. `length.out` just tells R exactly how many numbers I want in the end. I would use `by` if I want to list every other day in a month, and I'd use `length.out` if I just need exactly 5 data points to make a chart look right.
+
+```{r}
+vec_num <- seq(20, 60)
+
+mean(vec_num)
+sum(vec_num)
+length(vec_num)
+
+
+```
+
+Question #4: The vector `vec_num` has 41 data points in total. The mean is 40, and the sum is 1640.
+
+## Part B — Subsetting (Accessing) Vectors
+
+```{r}
+grades <- c(88, 92, 79, 95, 84)
+names(grades) <- c("Math", "Science", "English", "History", "PE")
+
+grades[3]
+grades[c(1, 4)]
+grades[c("Science", "PE")]
+
+grades[-c(1, 4)]
+grades[grades >= 85]
+
+
+```
+Question #5: I'd use negative indexing if I just want to delete the first row of data because I know it's a mistake. I'd use logical indexing if I want to find all students who passed (grades >= 75) because I don't know their exact positions in the list.
+
+Question #6: It prints `NA`. R does this to tell us the data is "Not Available" instead of just crashing the whole program with an error like other coding languages usually do.
+
+```{r}
+Filter(function(i) { all(i %% c(3,5,7) != 0) }, seq(100))
+
+
+```
+Question #7: The code above filters out any numbers between 1 and 100 that can be divided evenly by 3, 5, or 7.
+
+## Part C — Vector Operations and append()
+
+```{r}
+x <- c(1, 2, 3, 4)
+y <- c(10, 20, 30, 40)
+
+x + y
+x * 2
+
+z <- c(1, 2, 3, 4, 5, 6)
+short <- c(1, 0)
+
+z + short
+
+fruits <- c("apple", "banana", "cherry")
+append(fruits, "date")
+append(fruits, "kiwi", after = 1)
+
+
+```
+Question #8: Because `short` was too small, R just kept repeating its numbers (1, 0, 1, 0...) until it was as long as `z` so they could be added together.
+
+```{r}
+z + c(1, 0, 1)
+z + c(1, 0, 1, 1)
+
+
+```
+Question #9: The length 3 one worked fine because 3 goes into 6 evenly. But the length 4 one gave a warning because 4 doesn't go into 6 evenly, so R had to chop off the repeating pattern at the end.
+
+## Part D — Lists: Creating and Subsetting
+
+```{r}
+student <- list(
+  name = "Maria Santos", 
+  age = 20, 
+  grades = c(88, 92, 79), 
+  is_enrolled = TRUE
+)
+
+student["grades"]
+class(student["grades"])
+
+student[["grades"]]
+class(student[["grades"]])
+
+student$name
+student$grades[2]
+
+
+```
+Question #10: Single `[]` gives me back a list. Double `[[]]` actually opens the list up and gives me the raw number vector inside it.
+
+Question #11: Since lists can hold a bunch of different things like words and numbers together, R needs single brackets just to look at a slice of the list, and double brackets to actually take the items out completely. Vectors only hold one type of thing so they don't need this rule.
+
+## Part E — Critical Thinking Challenge
+
+```{r}
+inventory <- list(
+  item = c("Notebook", "Pen", "Eraser"),
+  price = c(25.50, 10.00, 5.00),
+  in_stock = c(TRUE, TRUE, FALSE)
+)
+
+inventory$item[inventory$in_stock]
+
+inventory$item <- append(inventory$item, "Ruler")
+inventory$price <- append(inventory$price, 15.00)
+inventory$in_stock <- append(inventory$in_stock, TRUE)
+
+inventory
+
+
+```
+Question #12: `inventory$in_stock` is just the values `TRUE, TRUE, FALSE`. When I put that inside the brackets for `item`, R just matches them up. It keeps item 1 and 2 because they are TRUE, and hides item 3 because it is FALSE.
+
+Question #13: If they are separate vectors, and I delete or sort one of them by accident, the other ones won't change with it. Then the prices wouldn't match the right items anymore. Using a list keeps them safely locked together so they don't get mixed up.
+
+## Conclusion
+
+Vectors are good for storing just one type of thing, like a list of just numbers or just words. Lists are better when you want to group different types of things together, like putting words, numbers, and TRUE/FALSE values all in one single variable.
+
+```
+
+```
