@@ -1,0 +1,193 @@
+---
+title: "Lab Activity: Arithmetic Operations and Basic Data Types"
+author: "Yanna Dawn Dequito"
+date: "2026-09-30"
+output: html_document
+---
+
+## Part A — Arithmetic Operations
+
+```{r part-a-1}
+# Store 17 in a and 5 in b
+a <- 17
+b <- 5
+
+# Print addition, subtraction, multiplication, and division
+a + b
+a - b
+a * b
+a / b
+
+```
+
+```{r part-a-2}
+# Compute and print modulo and integer division
+a %% b
+a %/% b
+
+```
+
+```{r part-a-3}
+# Print 2 raised to the power of 10
+2 ^ 10
+
+```
+
+- Question #1: 17 / 5 gives 3.4, 17 %% 5 gives 2, and 17 %/% 5 gives 3. These three numbers are related because 17 divided by 5 equals 3 with a remainder of 2. The %/% operator finds the whole number part (3), the %% operator finds the remainder (2), and regular division gives the complete answer with decimals (3.4).
+
+- Question #2: Before running the code, I guessed that 10 %% 3 would be 1 and 10 %/% 3 would be 3. My guess was correct because 3 goes into 10 three full times with 1 left over.
+
+---
+
+## Part B — Basic Data Types: typeof(), class(), and mode()
+
+```{r part-b-setup}
+x <- 42
+y <- 42L
+z <- "42"
+w <- TRUE
+v <- 3 + 2i
+
+```
+
+```{r part-b-typeof}
+typeof(x)
+typeof(y)
+typeof(z)
+typeof(w)
+typeof(v)
+
+```
+
+```{r part-b-class}
+class(x)
+class(y)
+class(z)
+class(w)
+class(v)
+
+```
+
+```{r part-b-mode}
+mode(x)
+mode(y)
+mode(z)
+mode(w)
+mode(v)
+
+```
+
+- Question #3: `typeof(x)` is "double" because R saves numbers with decimals by default, even if there is no decimal point written. `typeof(y)` is "integer" because putting `L` at the end forces R to save it as an integer.
+
+- Question #4: Yes, `typeof()` can be different from `class()` and `mode()`. For `y <- 42L`, `typeof()` and `class()` both say "integer", but `mode()` says "numeric" because `mode()` groups integers and decimals under the numeric category.
+
+---
+
+## Part C — Type Conversion
+
+```{r part-c-1}
+num_string <- "123"
+
+# Convert num_string to numeric
+num_val <- as.numeric(num_string)
+num_val
+
+typeof(num_val)
+class(num_val)
+mode(num_val)
+
+```
+
+```{r part-c-2}
+# Convert 0 and 1 to logical
+as.logical(0)
+as.logical(1)
+
+```
+
+```{r part-c-3}
+bad_string <- "hello123"
+
+# Convert bad_string to numeric
+as.numeric(bad_string)
+
+```
+
+- Question #5:
+
+* R gives a warning and NA instead of stopping so that the rest of your code can still run if only one item in a big dataset has an error.
+* If you ignore the warning, you might not notice that NA values replaced your data, which can break your calculations later.
+
+- Question #6:
+
+* I think `as.logical(2)` and `as.logical(-1)` will both output `TRUE`.
+* Testing them gives `TRUE` for both. The rule is that 0 turns into `FALSE` and any non-zero number turns into `TRUE`.
+
+---
+
+## Part D — Strings, paste(), and paste0()
+
+```{r part-d-1}
+first_name <- "Juan"
+last_name <- "Dela Cruz"
+
+print(first_name)
+cat(last_name, "\n")
+
+```
+
+```{r part-d-2}
+# Combine using paste() and paste0()
+paste(first_name, last_name)
+paste0(first_name, last_name)
+
+```
+
+```{r part-d-3}
+# Custom separator using paste()
+paste(first_name, last_name, sep = "-")
+
+```
+
+```{r part-d-4}
+age <- 21
+full_name <- paste(first_name, last_name)
+
+# Sentence using paste0()
+paste0(full_name, " is ", age, " years old.")
+
+```
+
+- Question #7: `paste()` puts a space between the words by default, while `paste0()` connects the words directly with no space in between.
+
+- Question #8: It did not cause an error because `paste0()` converts numbers into text automatically before putting them together. This is similar to calling `as.character()` on the number first.
+
+---
+
+## Part E — Critical Thinking Challenge
+
+```{r part-e-error, error=TRUE}
+# Predict and test "5" + 5
+"5" + 5
+
+```
+
+```{r part-e-fix}
+# Fixed code using explicit conversion
+as.numeric("5") + 5
+
+```
+
+- Question #9: R does not convert it automatically because the `+` sign is only meant for numbers. R makes you convert it yourself so you do not accidentally add text and numbers without realizing it.
+
+- Question #10: The column was probably saved as text instead of numbers when it was imported. To fix this, I would use `class()` to check if the column is character type, convert it to numbers using `as.numeric()`, and then run `sum()` on it.
+
+---
+
+## Conclusion
+
+In this lab, I learned how R works with different data types like double, integer, character, and logical, and how functions like `typeof()` and `class()` check them. I also learned how to join text using `paste()` and `paste0()` and how to convert types using `as.numeric()`. Knowing these data types is important so that your math functions and scripts run correctly without errors.
+
+```
+
+```
