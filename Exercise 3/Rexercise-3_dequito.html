@@ -387,17 +387,19 @@ min(age)</code></pre>
 <pre><code>## [1] 8</code></pre>
 <pre class="r"><code>max(age)</code></pre>
 <pre><code>## [1] 57</code></pre>
-<p>Question #1: For 1c, <code>new_age</code> becomes one really long
+<ul>
+<li><p>Question #1: For 1c, <code>new_age</code> becomes one really long
 vector. It puts all the ages, then a 0 in the middle, and then all the
-ages again.</p>
-<p>Question #2: <code>each</code> repeats every single letter before
+ages again.</p></li>
+<li><p>Question #2: <code>each</code> repeats every single letter before
 moving to the next one (like A, A, B, B). But <code>times</code> takes
-the whole group and repeats it all together (like A, B, A, B).</p>
-<p>Question #3: <code>by</code> controls the counting steps, like
+the whole group and repeats it all together (like A, B, A, B).</p></li>
+<li><p>Question #3: <code>by</code> controls the counting steps, like
 counting by 2s. <code>length.out</code> just tells R exactly how many
 numbers I want in the end. I would use <code>by</code> if I want to list
 every other day in a month, and I’d use <code>length.out</code> if I
-just need exactly 5 data points to make a chart look right.</p>
+just need exactly 5 data points to make a chart look right.</p></li>
+</ul>
 <pre class="r"><code>vec_num &lt;- seq(20, 60)
 
 mean(vec_num)</code></pre>
