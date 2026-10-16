@@ -1,0 +1,144 @@
+---
+title: "Lab Activity: Data Structures — Vectors and Lists in R"
+author: "Yanna Dawn Dequito"
+date: "2026-10-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Part A — Creating Vectors and Lists
+
+- Question #1
+
+```{r q1-worker-ages}
+# a. Create a vector for the worker's age
+worker_age <- c(34, 28, 22, 36, 27, 18, 52, 39, 42, 29, 35, 31, 27, 22, 37, 34, 19, 20, 57, 49, 50, 37, 46, 25, 17, 37, 43, 53, 41, 51, 35, 24, 33, 41, 53, 40, 18, 44, 38, 41, 48, 27, 39, 19, 30, 61, 54, 58, 26, 18)
+
+# b. How many data points?
+length(worker_age)
+
+# c. Find minimum and maximum age
+min(worker_age)
+max(worker_age)
+
+# d. Access 13th to 18th elements and 33rd to 35th elements
+worker_age[13:18]
+worker_age[33:35]
+
+# e. Access all except 10th, 20th, 30th, and 40th elements
+worker_age[-c(10, 20, 30, 40)]
+
+# f. Modify 4th, 14th, 24th, and 44th elements to value = 0
+worker_age[c(4, 14, 24, 44)] <- 0
+worker_age
+
+```
+
+- Answer a: I created a vector called `worker_age` using the `c()` function to store all 50 age values.
+
+- Answer b: There are 50 data points in total, which I checked using `length(worker_age)`.
+* Answer c: The minimum age among the workers is 17 and the maximum age is 61.
+
+- Answer d: The 13th to 18th elements are `27, 22, 37, 34, 19, 20` and the 33rd to 35th elements are `33, 41, 53`.
+
+- Answer e: By putting negative signs on the indices `-c(10, 20, 30, 40)`, R returned all workers except the 10th (29), 20th (49), 30th (51), and 40th (41) elements.
+
+- Answer f: Reassigning those positions directly changed the values at index 4, 14, 24, and 44 to 0 in the vector.
+
+---
+
+- Question #2
+
+```{r q2-rivers-dataset}
+data(rivers)
+
+# Calculate summary stats and store in a single vector
+river_summary <- c(
+  length = length(rivers),
+  sum = sum(rivers),
+  mean = mean(rivers),
+  median = median(rivers),
+  var = var(rivers),
+  sd = sd(rivers),
+  min = min(rivers),
+  max = max(rivers)
+)
+
+river_summary
+
+```
+
+- Answer a & b: I pulled up the `rivers` dataset and calculated all the requested summary statistics. I stored all 8 results inside a single named numeric vector called `river_summary`.
+
+---
+
+- Question #3
+
+```{r q3-forbes-ranking}
+# a. Create vectors according to the Forbes table
+power_rank <- c(1, 2, 3, 4, 5)
+celebrity_name <- c("Oprah Winfrey", "Tiger Woods", "Madonna", "Beyonce Knowles", "J.K. Rowling")
+annual_pay <- c(275, 115, 110, 87, 300)
+
+# Display initial values
+data.frame(Rank = power_rank, Name = celebrity_name, Pay = annual_pay)
+
+# b. Modify J.K. Rowling: power ranking to 15, pay to 90
+power_rank[5] <- 15
+annual_pay[5] <- 90
+
+# Display updated values
+data.frame(Rank = power_rank, Name = celebrity_name, Pay = annual_pay)
+
+```
+
+- Answer a: I created three vectors named `power_rank`, `celebrity_name`, and `annual_pay` to match the Forbes table.
+* Answer b: J.K. Rowling was at index 5, so I updated `power_rank[5]` to 15 and `annual_pay[5]` to 90.
+
+---
+
+- Question #4
+
+```{r q4-vegetables-list}
+# Create a list of 10 vegetables
+veggie_list <- list("Carrot", "Broccoli", "Spinach", "Cabbage", "Eggplant", 
+                    "Cucumber", "Lettuce", "Pumpkin", "Garlic", "Onion")
+veggie_list
+
+# a. Add 2 additional vegetables at the end
+veggie_list <- append(veggie_list, c("Cauliflower", "Radish"))
+veggie_list
+
+# b. Datapoints count after step a
+length(veggie_list)
+
+# c. Add 4 additional vegetables after index 5
+veggie_list <- append(veggie_list, c("Bell Pepper", "Zucchini", "Okra", "Celery"), after = 5)
+veggie_list
+
+# d. Final datapoints count
+length(veggie_list)
+
+```
+
+- Answer a: I added "Cauliflower" and "Radish" to the end of my vegetable list using `append()`.
+
+- Answer b: After adding those two vegetables, I now have 12 data points in my list.
+
+Answer c: Using `append(..., after = 5)`, I inserted 4 more vegetables right after index 5 ("Eggplant").
+
+- Answer d: My vegetable list now has a total of 16 data points.
+
+---
+
+## Conclusion
+
+Vectors and lists are both essential data structures in R. Vectors are best when all data points share the exact same type, while lists are much more flexible because they can store different data types and lengths together. Functions like `length()`, `min()`, `max()`, and `append()` make it easy to inspect and modify data in both structures.
+
+```
+
+```
