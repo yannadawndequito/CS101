@@ -1,0 +1,171 @@
+---
+title: "Lab Activity: Data Structures — Matrix and Array in R"
+author: "Yanna Dawn Dequito"
+date: "2026-10-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Part A — Creating Matrices
+
+```{r part-a}
+# Create a 3x3 matrix called m1 containing the numbers 1 to 9
+m1 <- matrix(1:9, nrow = 3, ncol = 3)
+print(m1)
+
+# Create a second 3x3 matrix called m2 with the SAME numbers 1:9,
+# but this time add the argument byrow = TRUE
+m2 <- matrix(1:9, nrow = 3, ncol = 3, byrow = TRUE)
+print(m2)
+
+scores <- matrix(c(88, 92, 79, 95, 84, 90), nrow = 2, ncol = 3, byrow = TRUE)
+rownames(scores) <- c("Quiz1", "Quiz2")
+colnames(scores) <- c("Ana", "Ben", "Cid")
+
+# Print scores and confirm the row/column names were applied
+print(scores)
+
+```
+
+- Answer 1: Normally R fills in the matrix by going down the columns first. Adding the `byrow = TRUE` argument changes this so R fills the numbers in going across the rows from left to right instead.
+
+- Answer 2: I tested it, and R just recycled the first number "1" to fill in the missing 9th slot. I also got a warning message saying the data length isn't a multiple of the number of rows, which lets me know the numbers didn't fit the dimensions perfectly.
+
+---
+
+## Part B — Subsetting Matrices
+
+```{r part-b}
+# Using scores from Part A:
+# Access the single value in row 1, column 2
+scores[1, 2]
+
+# Access the entire first row
+scores[1, ]
+
+# Access the entire "Ben" column
+scores[, "Ben"]
+
+# Return only the values in scores that are greater than or equal to 90
+scores[scores >= 90]
+
+```
+
+- Answer 3: When I ran `class()` on them, R said they were both just numeric vectors. I think R downgrades them automatically because a single row or column is just a flat line of numbers, so it doesn't need to be stored as a 2D grid anymore.
+
+- Answer 4: Because picking `scores >= 90` just grabs random numbers that pass the test, so the results don't form a perfect rectangle anymore. Since a matrix has to be a perfect rectangle, R just turns the result into a regular vector and drops the names.
+
+---
+
+## Part C — Matrix Properties and Operations
+
+```{r part-c}
+# Use dim(), nrow(), and ncol() on scores to report its dimensions
+dim(scores)
+nrow(scores)
+ncol(scores)
+
+# Use t() to transpose scores and store it as scores_t
+scores_t <- t(scores)
+print(scores_t)
+dim(scores_t)
+
+a <- matrix(1:4, nrow = 2)
+b <- matrix(5:8, nrow = 2)
+
+# Add a and b element-wise
+a + b
+
+# Multiply a and b element-wise
+a * b
+
+# Perform true matrix multiplication of a and b using %*%
+a %*% b
+
+```
+
+- Answer 5: Using `a * b` just multiplies the numbers that are sitting in the exact same spots in both matrices together. But `a %*% b` does the actual linear algebra matrix multiplication where rows are multiplied by columns, which gives totally different results.
+
+- Answer 6: When you transpose a matrix, you're literally flipping it sideways so the old rows become columns and the old columns become rows. If the names didn't swap with them, the labels would end up on the wrong data.
+
+---
+
+## Part D — cbind() and rbind()
+
+```{r part-d}
+# A new student "Dex" scored 85 on Quiz1 and 91 on Quiz2.
+# Use cbind() to add a new column to scores called Dex
+scores_v2 <- cbind(scores, Dex = c(85, 91))
+print(scores_v2)
+
+# A new quiz "Quiz3" was given with scores 80, 88, 93 for Ana, Ben, Cid.
+# Use rbind() to add this as a new row to scores.
+scores_v3 <- rbind(scores, Quiz3 = c(80, 88, 93))
+print(scores_v3)
+
+```
+
+- Answer 7: When I tested it, R gave a warning saying the number of rows isn't a multiple of the vector length, and the data looked messed up. The `cbind()` and `rbind()` functions need the dimensions to match perfectly so they can form a clean rectangle without any leftover data hanging off.
+
+- Answer 8: I would use `rbind()` if I was recording daily temperatures. The columns would be the cities, and every new day I would add a new observation as a new row to the bottom of the dataset.
+
+---
+
+## Part E — Arrays: Creating and Subsetting
+
+```{r part-e}
+# Create a 2x3x2 array called arr
+arr <- array(1:12, dim = c(2, 3, 2))
+print(arr)
+
+# Access the element in row 1, column 2, of the SECOND layer
+arr[1, 2, 2]
+
+# Access the entire first layer (slice) of arr
+arr[ , , 1]
+
+# Use dim() on arr to confirm its dimensions
+dim(arr)
+
+```
+
+- Answer 9: Looking at `dim(arr)`, the first number is the number of rows, the second number is the number of columns, and the third number is how many layers or matrix slices are stacked together in the array.
+
+- Answer 10: A digital color picture is a good example. The rows and columns are the pixels, but you need a third dimension for the red, green, and blue color channels. A 2D matrix wouldn't be enough because it could only hold one color value for each pixel.
+
+---
+
+## Part F — Critical Thinking Challenge
+
+```{r part-f}
+class_a <- matrix(c(85, 90, 78, 92), nrow = 2, byrow = TRUE,
+                  dimnames = list(c("S1", "S2"), c("Midterm", "Final")))
+class_b <- matrix(c(88, 84, 95, 91), nrow = 2, byrow = TRUE,
+                  dimnames = list(c("S3", "S4"), c("Midterm", "Final")))
+
+# Combine class_a and class_b into one matrix called all_students
+all_students <- rbind(class_a, class_b)
+print(all_students)
+
+# Compute each student's average score across Midterm and Final.
+rowMeans(all_students)
+
+```
+
+- Answer 11: I picked `rbind()` because the two classes have completely different students, which means they need to be stacked as new rows. The main clue was that they both shared the exact same column names (Midterm and Final), so stacking them vertically made everything line up.
+
+- Answer 12: I would just put all of them inside one function like `rbind(class1, class2, class3, class4, class5)` to stack them all up at the same time. To check my work, I'd use `dim()` and I would expect to see exactly 2 columns, but the row count should be the total number of students from all 5 classes combined.
+
+---
+
+## Conclusion
+
+A matrix is just a 2D grid made of rows and columns, but an array can stack multiple matrices together to make a 3D shape. Both are useful for organizing data of the same type. In a real dataset, I would use `rbind()` to add a new month of sales data to the bottom of a spreadsheet, and I would use `cbind()` if I needed to add a new column to track a brand new metric for all the existing months.
+
+```
+
+```
