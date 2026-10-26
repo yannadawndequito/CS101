@@ -1,7 +1,7 @@
 ---
-title: "RExercise#3_dequito"
+title: "Complete Vectors and lists lab"
 author: "Yanna Dawn Dequito"
-date: "2026-10-14"
+date: "2026-10-16"
 output: html_document
 ---
 
