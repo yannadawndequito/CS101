@@ -1,0 +1,138 @@
+---
+title: "Complete data frames lab"
+author: "Yanna Dawn Dequito"
+date: "2026-11-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Part A — Creating Data Frames
+
+```{r part-a}
+# Create a data frame called students containing Student_ID, Name, Age, Major, and GPA
+Student_ID <- c(101, 102, 103, 104, 105)
+Name <- c("Ana", "Ben", "Cid", "Dex", "Eve")
+Age <- c(20, 21, 19, 22, 20)
+Major <- c("CS", "DS", "IT", "CS", "DS")
+GPA <- c(3.8, 3.5, 3.9, 2.8, 3.6)
+
+students <- data.frame(Student_ID, Name, Age, Major, GPA)
+print(students)
+
+```
+
+- Answer 1: In a matrix, every single value inside has to be the exact same data type, but a data frame is way more flexible because each column can hold a different data type. So I can have text for student names, whole numbers for age, and decimals for GPA all in the same table, as long as all the values inside one single column match.
+
+- Answer 2: When I checked what happens with unequal vector lengths, R threw an error saying arguments imply differing number of rows. This happens because R needs all the vectors to be the exact same length so it can form a clean rectangle without missing values hanging off.
+
+---
+
+## Part B — Subsetting Data Frames
+
+```{r part-b}
+# Access the Major column using the $ operator
+students$Major
+
+# Access the GPA column using double square brackets [[ ]]
+students[["GPA"]]
+
+# Subset rows where GPA is greater than or equal to 3.5
+students[students$GPA >= 3.5, ]
+
+# Extract the cell in row 3, column "Name"
+students[3, "Name"]
+
+```
+
+- Answer 3: Using `students$Major` directly pulls out the raw values as a flat 1D vector. But when I use `students["Major"]` with single square brackets, R keeps it as a mini 1D data frame instead. Single brackets hold onto the tabular data frame shape, while `$` just gives me the vector inside.
+
+- Answer 4: Writing `students$GPA >= 3.5` makes R test every single row and return a list of `TRUE` or `FALSE` answers. When I put that test inside `students[condition, ]`, R goes line by line and keeps only the rows that got a `TRUE`, while dropping the `FALSE` ones.
+
+---
+
+## Part C — Inspecting Data Frame Properties
+
+```{r part-c}
+# Inspect the structure of students using str()
+str(students)
+
+# Get summary statistics using summary()
+summary(students)
+
+# Display dimensions, row count, column count, and column names
+dim(students)
+nrow(students)
+ncol(students)
+names(students)
+
+# Display the first 3 rows using head()
+head(students, n = 3)
+
+```
+
+- Answer 5: Running `str()` shows me the inside skeleton of my data frame, like the total rows, columns, and the exact data type of every column. On the other hand, `summary()` gives me math stats like the minimum, maximum, mean, and median for numbers, or counts for text columns.
+
+- Answer 6: The `names()` function lists out all the column headers in my data frame. I always run `names(df)` first to double-check the exact spelling and capital letters so I don't get a `NULL` result by accident when using `$`.
+
+---
+
+## Part D — Data Frame Operations: Adding, Removing, Filtering, and Sorting
+
+```{r part-d}
+# Add a new column called Status (Passed if GPA >= 3.0, else Failed)
+students$Status <- ifelse(students$GPA >= 3.0, "Passed", "Failed")
+print(students)
+
+# Filter for CS majors who passed
+students[students$Major == "CS" & students$Status == "Passed", ]
+
+# Sort the data frame by GPA in descending order
+students_sorted <- students[order(students$GPA, decreasing = TRUE), ]
+print(students_sorted)
+
+# Remove the Status column by setting it to NULL
+students$Status <- NULL
+print(students)
+
+```
+
+- Answer 7: Assigning `NULL` to a column like `students$Status <- NULL` completely wipes that column out of the data frame and shrinks the total column count by one.
+
+- Answer 8: I used a single ampersand `&` because it checks every single row in the data frame one by one to see if both conditions are true. If I used `&&`, R would only check the very first row and ignore all the rest, which breaks the filter.
+
+---
+
+## Part E — Critical Thinking Challenge
+
+```{r part-e}
+# Combine two student data frames using rbind()
+class1 <- data.frame(Student_ID = c(201, 202), Name = c("Fay", "Geo"), GPA = c(3.4, 3.9))
+class2 <- data.frame(Student_ID = c(203, 204), Name = c("Hal", "Ivy"), GPA = c(3.1, 3.7))
+
+combined_classes <- rbind(class1, class2)
+print(combined_classes)
+
+# Sort the combined data frame by GPA descending and compute the overall average GPA
+combined_sorted <- combined_classes[order(combined_classes$GPA, decreasing = TRUE), ]
+print(combined_sorted)
+
+mean(combined_classes$GPA)
+
+```
+
+- Answer 9: For `rbind()` to work smoothly, both data frames have to share the exact same column names in the exact same order. If a column name is misspelled or missing in one of them, R freaks out and won't combine them.
+
+- Answer 10: I would use `cbind()` if I wanted to add a brand new column (like `Attendance` or `Quiz_Scores`) for my current set of students. But I would use `rbind()` if I got a list of brand new students and needed to stack them at the bottom of my existing table as new rows.
+
+---
+
+## Conclusion
+
+Data frames are my favorite data structure in R because they act like real spreadsheets, letting me combine numbers and text side by side. Learning how to access columns with `$`, filter rows with logical conditions, and stack data with `rbind()` and `cbind()` makes it really easy to manage real-world datasets like student grade sheets or research results.
+
+
+```
