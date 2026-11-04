@@ -1,0 +1,138 @@
+---
+title: "R Lab: Basic Operations of R Programming"
+author: "Yanna Dawn Dequito"
+date: "2026-11-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Part A — Working with External Data & Data Frames
+
+* Question #1
+
+```{r q1-shoe-data}
+# 1. Create shoe size and height data frame and export to CSV
+shoes_data <- data.frame(
+  Respondent = 1:10,
+  Gender = c("M", "F", "M", "M", "F", "F", "M", "F", "M", "F"),
+  ShoeSize = c(10.5, 7.0, 11.0, 9.5, 6.5, 8.0, 12.0, 7.5, 10.0, 6.0),
+  Height = c(70, 64, 72, 68, 62, 65, 74, 63, 69, 61)
+)
+
+write.csv(shoes_data, file = "shoesize.csv", row.names = FALSE)
+
+# 2. Import CSV and display last 5 rows
+shoes <- read.csv("shoesize.csv")
+tail(shoes, n = 5)
+
+# 3. Structure and content
+str(shoes)
+
+# 4. Inspect dimensions
+dim(shoes)
+nrow(shoes)
+ncol(shoes)
+
+# 5. Summary statistics
+summary(shoes)
+
+# 6. Subset by males and females
+males_subset <- subset(shoes, Gender == "M")
+males_subset
+
+females_subset <- subset(shoes, Gender == "F")
+females_subset
+
+# 7. Find means of shoe size and height
+# Overall means
+mean(shoes$ShoeSize)
+mean(shoes$Height)
+
+# Male means
+mean(males_subset$ShoeSize)
+mean(males_subset$Height)
+
+# Female means
+mean(females_subset$ShoeSize)
+mean(females_subset$Height)
+
+```
+
+- Answer 1: I created the `shoes_data` data frame with 10 respondents and exported it to a local CSV file named `shoesize.csv`.
+
+- Answer 2: Using `read.csv()`, I imported the file back into R and ran `tail(shoes, n = 5)` to show the bottom 5 rows.
+
+- Answer 3: The `str()` function shows that the dataset has 10 observations across 4 variables (`Respondent`, `Gender`, `ShoeSize`, and `Height`).
+
+- Answer 4: Checking `dim(shoes)` shows 10 rows and 4 columns in total (`nrow = 10`, `ncol = 4`).
+
+- Answer 5: The main difference is that `str()` shows the technical structure and data types of the variables, while `summary()` gives numerical summary stats like minimum, maximum, mean, and quartile values for each column.
+
+- Answer 6: I created two separate subsets using `subset()`. The male subset contains 5 respondents and the female subset contains 5 respondents.
+
+- Answer 7: The overall mean shoe size is 8.8 and mean height is 66.8 inches. For males, the mean shoe size is 10.5 and mean height is 70.6 inches. For females, the mean shoe size is 7.0 and mean height is 63.0 inches.
+
+- Answer 8: Yes, there is a positive relationship between shoe size and height. Looking at the output, taller respondents consistently have larger shoe sizes to help support their taller frame.
+
+---
+
+- Question #2
+
+```{r q2-gender-factor}
+# Convert Gender to factor
+shoes$Gender <- factor(shoes$Gender, levels = c("M", "F"), labels = c("Male", "Female"))
+str(shoes$Gender)
+summary(shoes$Gender)
+
+```
+
+- Answer: I converted `Gender` into a factor with levels `"Male"` and `"Female"`. Running `summary()` on it now gives an exact count of 5 Males and 5 Females.
+
+---
+
+- Question #3
+- Answer: Using the folder containing the `.Rmd` file as the working directory makes imports more reliable because it relies on relative paths. When I share the file with someone else, R Markdown looks for `shoesize.csv` right in the same folder instead of looking for a fixed path on my personal computer.
+
+---
+
+- Question #4
+- Answer: Initially R imported `Gender` as a character type (`chr`). If a numeric column like `ShoeSize` accidentally got imported as character text due to a typo or stray symbol, R would treat the numbers as plain text and refuse to perform math functions like `mean()` or `cor()`.
+
+---
+
+- Question #5
+- Answer: It is good practice to check both because `head()` only shows the top few rows. Checking `tail()` helps catch errors at the bottom of the file like empty trailing rows, corrupted records, or extra text added during file exports.
+
+---
+
+- Question #6
+
+```{r q6-cor-and-subset}
+# Compute correlation between shoe size and height
+cor(shoes$ShoeSize, shoes$Height)
+
+# Return all rows where ShoeSize >= 11
+subset(shoes, ShoeSize >= 11)
+
+```
+
+- Answer 1: The correlation between shoe size and height across all observations is approximately `0.975`, showing a very strong positive correlation.
+- Answer 2: Using `subset(shoes, ShoeSize >= 11)` returned rows 3 and 7 (respondents with shoe sizes 11.0 and 12.0).
+
+---
+
+- Question #7
+- Answer: Comparing the subsets shows that males have a higher average height (70.6 inches) and shoe size (10.5) than females (63.0 inches height and 7.0 shoe size). This dataset shows that gender is an important factor to account for separately because average physical dimensions differ significantly between gender groups.
+
+---
+
+## Conclusion
+
+Importing external CSV data into R using `read.csv()` is essential for analyzing real-world datasets. Working with factors, computing summary statistics, subsetting data, and finding correlation values allows us to identify meaningful relationships between physical traits like height and shoe size across different demographic groups.
+
+```
+
