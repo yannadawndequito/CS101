@@ -1,0 +1,140 @@
+---
+title: "R Lab: Data Structures - Data Frames"
+author: "Yanna Dawn Dequito"
+date: "2026-09-25"
+output: html_document
+---
+
+## Part A — Creating Data Frames
+
+- Question #1
+
+**a. Check that all vectors have the same length, then create the data frame**
+
+```{r create-dataframe}
+Respondent        <- 1:20
+Sex               <- c(2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2)
+FathersOccupation <- c(1,3,3,3,1,2,3,1,1,1,3,2,1,3,3,1,3,1,2,1)
+PersonsAtHome     <- c(5,7,3,8,5,9,6,7,8,4,7,5,4,7,8,8,3,11,7,6)
+SiblingsAtSchool  <- c(6,4,4,1,2,1,5,3,1,2,3,2,5,5,2,1,2,5,3,2)
+TypesOfHouses     <- c(1,2,3,1,1,3,3,1,2,3,2,3,2,2,3,3,3,3,3,2)
+
+length(Respondent); length(Sex); length(FathersOccupation)
+length(PersonsAtHome); length(SiblingsAtSchool); length(TypesOfHouses)
+
+survey <- data.frame(Respondent, Sex, FathersOccupation,
+                     PersonsAtHome, SiblingsAtSchool, TypesOfHouses)
+survey
+```
+
+**b. Describe the data (structure and summary)**
+
+```{r describe}
+str(survey)
+summary(survey)
+```
+
+`str()` shows a data frame with 20 observations of 6 variables. Only `Respondent` is stored as `int` (because it was created with `1:20`); the other five columns (`Sex`, `FathersOccupation`, `PersonsAtHome`, `SiblingsAtSchool`, `TypesOfHouses`) are `num`. `summary()` reports the minimum, 1st quartile, median, mean, 3rd quartile, and maximum for every column, treating all six as numbers. For example, `Sex` ranges from 1 to 2 with a mean of 1.85, `PersonsAtHome` ranges from 3 to 11 with a mean of 6.4, and `SiblingsAtSchool` ranges from 1 to 6 with a mean of 2.95.
+
+**c. Dimensions**
+
+```{r dimensions}
+dim(survey)
+```
+
+The data frame has 20 rows and 6 columns.
+
+**d. Create factors for Sex, Father's Occupation and Types of Houses**
+
+```{r factors}
+survey_f <- survey
+survey_f$Sex <- factor(survey_f$Sex, levels = 1:2,
+                       labels = c("Male", "Female"))
+survey_f$FathersOccupation <- factor(survey_f$FathersOccupation, levels = 1:3,
+                       labels = c("Farmer", "Driver", "Others"))
+survey_f$TypesOfHouses <- factor(survey_f$TypesOfHouses, levels = 1:3,
+                       labels = c("Wood", "Semi-Concrete", "Concrete"))
+str(survey_f)
+```
+
+**e. Mean of all columns** (uses the numeric `survey`, because `mean()` of a factor gives `NA`)
+
+```{r means}
+colMeans(survey)
+```
+
+The mean of `PersonsAtHome` is 6.4, meaning an average of about 6 people per household, and the mean of `SiblingsAtSchool` is 2.95, or about 3 siblings in school per respondent. These two are meaningful because they are real counts. The means of the other columns, such as `Sex` (1.85), `FathersOccupation` (1.95), and `TypesOfHouses` (2.3), are not meaningful because those columns are categories coded as numbers, and `Respondent` is just an ID number.
+
+**f. First five rows, all columns**
+
+```{r first-five}
+survey[1:5, ]
+```
+
+The output shows respondents 1 to 5 with all six columns. Four of them are female (Sex = 2) and one is male (respondent 3, Sex = 1).
+
+**g. Select Types of Houses and store it as `types_houses`**
+
+```{r types-houses}
+types_houses <- survey$TypesOfHouses
+types_houses
+```
+
+**h. Male respondents whose father is a farmer**
+
+```{r male-farmer}
+subset(survey, Sex == 1 & FathersOccupation == 1)
+```
+
+No male respondent has a farmer father, so the result has 0 rows. The 3 male respondents (3, 11, and 19) have fathers whose occupations are Others, Others, and Driver, so none of them matches `FathersOccupation == 1`.
+
+**i. Female respondents with 5 or more siblings at school**
+
+```{r female-siblings}
+subset(survey, Sex == 2 & SiblingsAtSchool >= 5)
+```
+
+Respondents 1, 7, 13, 14 and 18 meet this condition.
+
+- Question #2
+
+Each row is one respondent, so every column must hold exactly one answer per respondent. If one vector had 19 values, `data.frame()` would stop with an error, or recycling could silently shift answers onto the wrong respondents. Either way, the data would no longer describe the same 20 people.
+
+- Question #3
+
+Sex, FathersOccupation, and TypesOfHouses are nominal categories stored as numbers; the numbers are only labels, so 2 is not "more" than 1. PersonsAtHome and SiblingsAtSchool are real counts. Averaging Sex is misleading because the result (1.85) does not describe any real quantity. It only reflects the share of 1s and 2s, yet it looks like a measurement.
+
+- Question #4
+
+```{r q4}
+subset(survey, Sex == 1)
+```
+
+The output shows only the number 1 in the Sex column, so someone without the legend cannot tell whether 1 means male or female, and might even read it as a rank or count. This shows that coded data is not self-explanatory before it is labeled. Its meaning lives outside the data, which makes misreadings easy.
+
+- Question #5
+
+```{r q5}
+sum(survey$Sex == 1)
+nrow(subset(survey, Sex == 1))
+```
+
+Only 3 of the 20 respondents are male. A sample this small makes me cautious about generalizing, because one or two respondents can change a pattern a lot and the sample may not represent the larger population. For example, no male respondent has a farmer father, but with only 3 males that says very little about the population.
+
+- Question #6
+
+```{r q6}
+summary(survey)
+```
+
+R only sees how the data is stored, and the values are numbers, so it summarizes them as numbers (min, mean, max). It cannot know that 1 and 2 mean Male and Female unless we convert them to factors. This shows the difference between how data is stored (its type) and what it means.
+
+- Question #7
+
+```{r q7}
+mean(survey$PersonsAtHome)
+mean(survey$Sex)
+```
+
+The mean of PersonsAtHome (6.4) is meaningful, because it is a real count and reads as an average household size of about 6 people. The mean of Sex (1.85) is not meaningful, because Sex is a category coded as 1 and 2. For categories, report counts or proportions instead, such as 3 males (15%) and 17 females (85%).
+
