@@ -418,7 +418,10 @@ output?</p>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <pre class="r"><code>class(TRUE)</code></pre>
 <pre><code>## [1] &quot;logical&quot;</code></pre>
-<pre><code>The output for the paste(&quot;Student&quot;, 1:3, sep = &quot;-&quot;) is &quot;Student-1&quot; &quot;Student-2&quot; &quot;Student-3&quot;, for the class(42) the output is &quot;numeric&quot;, for the class(42L) the output is &quot;integer&quot;, the output for class(&quot;42&quot;) is &quot;character&quot;, for the class(411) the output is &quot;numeric&quot; and the output for class(TRUE) is &quot;logical&quot;.</code></pre>
+<p>The paste() function joins the text and numbers to create “Student-1”
+“Student-2” “Student-3”, while the class() calls categorize 42 and 411
+as “numeric”, 42L as “integer”, “42” as “character”, and TRUE as
+“logical”.</p>
 </div>
 <div id="part-b-data-frames-and-conditional-statements" class="section level2">
 <h2>Part B: Data Frames and Conditional Statements</h2>
@@ -638,7 +641,7 @@ tryCatch(
 )</code></pre>
 <pre><code>## rbind failed: numbers of columns of arguments do not match</code></pre>
 <pre><code>## NULL</code></pre>
-<pre><code>The rbind() requires all data frames that is being combined to have matching column names and structures. When column names are different from one another, for example,student_name vs name, R cannot map the rows automatically and it doesnt match.</code></pre>
+<pre><code>The rbind() function requires every data frame being combined to have the exact same column names and layout. If there is a mismatch in column names (like student_name instead of name), R won&#39;t be able to map the rows together.</code></pre>
 <p>Part D: Subsetting</p>
 <p>Use students_all (with quiz) for all questions. Print every result.
 D1 Extract the name column in three ways: $, [[“name”]], and [ ,
@@ -718,7 +721,7 @@ output?</p>
 the integers represent.</p>
 <pre class="r"><code>as.integer(students_all$sex)</code></pre>
 <pre><code>##  [1] 1 2 2 1 1 2 1 2 1 2</code></pre>
-<pre class="r"><code># Underneath factor labels, R stores levels as integer values corresponding to alphabetical order of the levels (1 for &quot;F&quot; and 2 for &quot;M&quot;).</code></pre>
+<pre class="r"><code># R assigns integers to factor levels based on alphabetical order, mapping &quot;F&quot; to 1 and &quot;M&quot; to 2.</code></pre>
 <p>E4 Create a new factor sex_label from sex using factor() with levels
 = c(“F”, “M”) and labels = c(“Female”, “Male”). Add it to students_all
 and print its levels().</p>
