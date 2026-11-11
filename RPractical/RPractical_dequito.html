@@ -11,9 +11,9 @@
 
 <meta name="author" content="Yanna Dawn Dequito" />
 
-<meta name="date" content="2026-11-04" />
+<meta name="date" content="2026-11-11" />
 
-<title>R Lab: Basic Operations of R Programming</title>
+<title>RPractical_Domael</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,205 +350,380 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">R Lab: Basic Operations of R
-Programming</h1>
+<h1 class="title toc-ignore">RPractical_Domael</h1>
 <h4 class="author">Yanna Dawn Dequito</h4>
-<h4 class="date">2026-11-04</h4>
+<h4 class="date">2026-11-11</h4>
 
 </div>
 
 
-<div id="part-a-working-with-external-data-data-frames" class="section level2">
-<h2>Part A — Working with External Data &amp; Data Frames</h2>
+<div id="part-a-basic-operations" class="section level2">
+<h2>Part A: basic Operations</h2>
+<p>A1 Create v as the sequence 5, 10, 15, …, 50 using seq(). Print its
+length, sume and mean.</p>
+<pre class="r"><code>v &lt;- seq(5, 50, by=5)
+length(v)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>sum(v)</code></pre>
+<pre><code>## [1] 275</code></pre>
+<pre class="r"><code>mean(v)</code></pre>
+<pre><code>## [1] 27.5</code></pre>
+<p>A2 Create w that repeats the vector c(1, 2, 3) four times, and z that
+repeats each element of c (1,2, 3) four times. Print both.</p>
+<pre class="r"><code>w &lt;- rep(c(1, 2, 3), times = 4)
+z &lt;- rep(c(1, 2, 3), each = 4)
+w</code></pre>
+<pre><code>##  [1] 1 2 3 1 2 3 1 2 3 1 2 3</code></pre>
+<pre class="r"><code>z</code></pre>
+<pre><code>##  [1] 1 1 1 1 2 2 2 2 3 3 3 3</code></pre>
+<p>A3 Compute and print: the remainder of 17 divided by 5, the integer
+division of 17 by 5, 2 to the power of 10, the square root of 144, and
+pi rounded to 3 decimals.</p>
+<pre class="r"><code>17 %% 5      </code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>17 %/% 5      </code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>2^10          </code></pre>
+<pre><code>## [1] 1024</code></pre>
+<pre class="r"><code>sqrt(144)    </code></pre>
+<pre><code>## [1] 12</code></pre>
+<pre class="r"><code>round(pi, 3)  </code></pre>
+<pre><code>## [1] 3.142</code></pre>
+<p>A4 Given a &lt;- c(2, 4, 6, 8) and b&lt;- c(1,3,5,7), print a + b, a
+* b the logical comparison a &gt; b, and the dot product sum (a * b)
+.</p>
+<pre class="r"><code>a &lt;- c(2, 4, 6, 8)
+b &lt;- c(1, 3, 5, 7)
+
+a + b</code></pre>
+<pre><code>## [1]  3  7 11 15</code></pre>
+<pre class="r"><code>a * b</code></pre>
+<pre><code>## [1]  2 12 30 56</code></pre>
+<pre class="r"><code>a &gt; b</code></pre>
+<pre><code>## [1] TRUE TRUE TRUE TRUE</code></pre>
+<pre class="r"><code>sum(a * b)</code></pre>
+<pre><code>## [1] 100</code></pre>
+<p>A5 Use paste() to produce “Student-1” “Student-2” “Student-3”. Then
+identifying the datatype of 42, 42L, “42”, 4li, and TRUE. What are its
+output?</p>
+<pre class="r"><code>paste(&quot;Student&quot;, 1:3, sep = &quot;-&quot;)</code></pre>
+<pre><code>## [1] &quot;Student-1&quot; &quot;Student-2&quot; &quot;Student-3&quot;</code></pre>
+<pre class="r"><code>class(42)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>class(42L)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>class(&quot;42&quot;)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>class(411)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>class(TRUE)</code></pre>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<pre><code>The output for the paste(&quot;Student&quot;, 1:3, sep = &quot;-&quot;) is &quot;Student-1&quot; &quot;Student-2&quot; &quot;Student-3&quot;, for the class(42) the output is &quot;numeric&quot;, for the class(42L) the output is &quot;integer&quot;, the output for class(&quot;42&quot;) is &quot;character&quot;, for the class(411) the output is &quot;numeric&quot; and the output for class(TRUE) is &quot;logical&quot;.</code></pre>
+</div>
+<div id="part-b-data-frames-and-conditional-statements" class="section level2">
+<h2>Part B: Data Frames and Conditional Statements</h2>
+<p>B1 Create a data frame students with 8 rows and these columns (use
+stringsAsFactors = FALSE; sex is “M” or “F”):</p>
+<pre class="r"><code>students &lt;- data.frame(
+  id = 1:8,
+  name = c(&quot;Alice&quot;, &quot;Bruno&quot;, &quot;Chen&quot;, &quot;Dana&quot;, &quot;Elif&quot;, &quot;Farid&quot;, &quot;Grace&quot;, &quot;Hiro&quot;),
+  sex = c(&quot;F&quot;, &quot;M&quot;, &quot;M&quot;, &quot;F&quot;, &quot;F&quot;, &quot;M&quot;, &quot;F&quot;, &quot;M&quot;),
+  section = c(&quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;C&quot;, &quot;B&quot;, &quot;C&quot;, &quot;A&quot;, &quot;B&quot;),
+  midterm = c(78, 85, 92, 67, 74, 88, 95, 59),
+  final = c(82, 79, 96, 71, 80, 91, 93, 65),
+  attendance = c(95, 88, 100, 72, 90, 85, 98, 60),
+  stringsAsFactors = FALSE
+)
+students</code></pre>
+<pre><code>##   id  name sex section midterm final attendance
+## 1  1 Alice   F       A      78    82         95
+## 2  2 Bruno   M       B      85    79         88
+## 3  3  Chen   M       A      92    96        100
+## 4  4  Dana   F       C      67    71         72
+## 5  5  Elif   F       B      74    80         90
+## 6  6 Farid   M       C      88    91         85
+## 7  7 Grace   F       A      95    93         98
+## 8  8  Hiro   M       B      59    65         60</code></pre>
+<p>B2 Display the structure, dimensions, colums names, and summary of
+students.</p>
+<pre class="r"><code>str(students)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    8 obs. of  7 variables:
+##  $ id        : int  1 2 3 4 5 6 7 8
+##  $ name      : chr  &quot;Alice&quot; &quot;Bruno&quot; &quot;Chen&quot; &quot;Dana&quot; ...
+##  $ sex       : chr  &quot;F&quot; &quot;M&quot; &quot;M&quot; &quot;F&quot; ...
+##  $ section   : chr  &quot;A&quot; &quot;B&quot; &quot;A&quot; &quot;C&quot; ...
+##  $ midterm   : num  78 85 92 67 74 88 95 59
+##  $ final     : num  82 79 96 71 80 91 93 65
+##  $ attendance: num  95 88 100 72 90 85 98 60</code></pre>
+<pre class="r"><code>dim(students)</code></pre>
+<pre><code>## [1] 8 7</code></pre>
+<pre class="r"><code>colnames(students)</code></pre>
+<pre><code>## [1] &quot;id&quot;         &quot;name&quot;       &quot;sex&quot;        &quot;section&quot;    &quot;midterm&quot;   
+## [6] &quot;final&quot;      &quot;attendance&quot;</code></pre>
+<pre class="r"><code>summary(students)</code></pre>
+<pre><code>##        id              name          sex         section     midterm     
+##  Min.   :1.00   Length   :8   Length   :8   Length   :8   Min.   :59.00  
+##  1st Qu.:2.75   N.unique :8   N.unique :2   N.unique :3   1st Qu.:72.25  
+##  Median :4.50   N.blank  :0   N.blank  :0   N.blank  :0   Median :81.50  
+##  Mean   :4.50   Min.nchar:4   Min.nchar:1   Min.nchar:1   Mean   :79.75  
+##  3rd Qu.:6.25   Max.nchar:5   Max.nchar:1   Max.nchar:1   3rd Qu.:89.00  
+##  Max.   :8.00                                             Max.   :95.00  
+##      final         attendance    
+##  Min.   :65.00   Min.   : 60.00  
+##  1st Qu.:77.00   1st Qu.: 81.75  
+##  Median :81.00   Median : 89.00  
+##  Mean   :82.12   Mean   : 86.00  
+##  3rd Qu.:91.50   3rd Qu.: 95.75  
+##  Max.   :96.00   Max.   :100.00</code></pre>
+<p>B3 Add a column average = mean of midterm and final for each student,
+rounded to 1 decimal.</p>
+<pre class="r"><code>students$average &lt;- round(rowMeans(students[, c(&quot;midterm&quot;, &quot;final&quot;)]), 1)
+students</code></pre>
+<pre><code>##   id  name sex section midterm final attendance average
+## 1  1 Alice   F       A      78    82         95    80.0
+## 2  2 Bruno   M       B      85    79         88    82.0
+## 3  3  Chen   M       A      92    96        100    94.0
+## 4  4  Dana   F       C      67    71         72    69.0
+## 5  5  Elif   F       B      74    80         90    77.0
+## 6  6 Farid   M       C      88    91         85    89.5
+## 7  7 Grace   F       A      95    93         98    94.0
+## 8  8  Hiro   M       B      59    65         60    62.0</code></pre>
+<p>B4 Add a logical column passed that is TRUE when average &gt;= 70 and
+attendance &gt;= 75.</p>
+<pre class="r"><code>students$passed &lt;- students$average &gt;= 72 &amp; students$attendance &gt;= 75
+students</code></pre>
+<pre><code>##   id  name sex section midterm final attendance average passed
+## 1  1 Alice   F       A      78    82         95    80.0   TRUE
+## 2  2 Bruno   M       B      85    79         88    82.0   TRUE
+## 3  3  Chen   M       A      92    96        100    94.0   TRUE
+## 4  4  Dana   F       C      67    71         72    69.0  FALSE
+## 5  5  Elif   F       B      74    80         90    77.0   TRUE
+## 6  6 Farid   M       C      88    91         85    89.5   TRUE
+## 7  7 Grace   F       A      95    93         98    94.0   TRUE
+## 8  8  Hiro   M       B      59    65         60    62.0  FALSE</code></pre>
+<p>B5 Using ifelse(), add a column standing with these values based on
+average: * “Honors” if average &gt;= 90 * “Good” if average &gt;= 75
+(and below) * “Needs Support” otherwise</p>
+<pre class="r"><code>students$standing &lt;- ifelse(students$average &gt;= 90, &quot;Honors&quot;,
+                     ifelse(students$average &gt;= 75, &quot;Good&quot;, &quot;Needs Support&quot;))
+students</code></pre>
+<pre><code>##   id  name sex section midterm final attendance average passed      standing
+## 1  1 Alice   F       A      78    82         95    80.0   TRUE          Good
+## 2  2 Bruno   M       B      85    79         88    82.0   TRUE          Good
+## 3  3  Chen   M       A      92    96        100    94.0   TRUE        Honors
+## 4  4  Dana   F       C      67    71         72    69.0  FALSE Needs Support
+## 5  5  Elif   F       B      74    80         90    77.0   TRUE          Good
+## 6  6 Farid   M       C      88    91         85    89.5   TRUE          Good
+## 7  7 Grace   F       A      95    93         98    94.0   TRUE        Honors
+## 8  8  Hiro   M       B      59    65         60    62.0  FALSE Needs Support</code></pre>
+<p>B6 Write a function classifying(score) that uses an if/ elde if/
+else/ chain and returns “Distinction” for 85 or above, “Merit” for 70 to
+84. “Pass” for 50 to 69, and “Fail” below 50. Test it with sapply (c(90,
+73, 55, 40), classify) and print the result.</p>
+<pre class="r"><code>classify &lt;- function(score) {
+  if (score &gt;= 85) {
+    return(&quot;Distinction&quot;)
+  } else if (score &gt;= 70) {
+    return(&quot;Merit&quot;)
+  } else if (score &gt;= 50) {
+    return(&quot;Pass&quot;)
+  } else {
+    return(&quot;Fail&quot;)
+  }
+}
+
+sapply(c(90, 73, 55, 40), classify)</code></pre>
+<pre><code>## [1] &quot;Distinction&quot; &quot;Merit&quot;       &quot;Pass&quot;        &quot;Fail&quot;</code></pre>
+</div>
+<div id="part-c-rbind-and-cbind" class="section level2">
+<h2>Part C: rbind() and cbind()</h2>
+<p>C1 Create a data frame new_students with two students. Its columns
+must match the original, including average, passed and standing,
+computed the same way:</p>
 <ul>
-<li>Question #1</li>
+<li>id 9, Ines, F, section C, midterm 81, final 84, attendance 92</li>
+<li>id 10, Jamal, M, section A, midterm 70, final 68, attendance 80</li>
 </ul>
-<pre class="r"><code># 1. Create shoe size and height data frame and export to CSV
-shoes_data &lt;- data.frame(
-  Respondent = 1:10,
-  Gender = c(&quot;M&quot;, &quot;F&quot;, &quot;M&quot;, &quot;M&quot;, &quot;F&quot;, &quot;F&quot;, &quot;M&quot;, &quot;F&quot;, &quot;M&quot;, &quot;F&quot;),
-  ShoeSize = c(10.5, 7.0, 11.0, 9.5, 6.5, 8.0, 12.0, 7.5, 10.0, 6.0),
-  Height = c(70, 64, 72, 68, 62, 65, 74, 63, 69, 61)
+<p>Use rbind() to append them to students, saving the result as
+students_all.</p>
+<pre class="r"><code>new_students &lt;- data.frame(
+  id = c(9, 10),
+  name = c(&quot;Ines&quot;, &quot;Jamal&quot;),
+  sex = c(&quot;F&quot;, &quot;M&quot;),
+  section = c(&quot;C&quot;, &quot;A&quot;),
+  midterm = c(81, 70),
+  final = c(84, 68),
+  attendance = c(92, 80),
+  stringsAsFactors = FALSE
 )
 
-write.csv(shoes_data, file = &quot;shoesize.csv&quot;, row.names = FALSE)
+new_students$average &lt;- round(rowMeans(new_students[, c(&quot;midterm&quot;, &quot;final&quot;)]), 1)
+new_students$passed &lt;- new_students$average &gt;= 72 &amp; new_students$attendance &gt;= 75
+new_students$standing &lt;- ifelse(new_students$average &gt;= 90, &quot;Honors&quot;,
+                         ifelse(new_students$average &gt;= 75, &quot;Good&quot;, &quot;Needs Support&quot;))
 
-# 2. Import CSV and display last 5 rows
-shoes &lt;- read.csv(&quot;shoesize.csv&quot;)
-tail(shoes, n = 5)</code></pre>
-<pre><code>##    Respondent Gender ShoeSize Height
-## 6           6      F      8.0     65
-## 7           7      M     12.0     74
-## 8           8      F      7.5     63
-## 9           9      M     10.0     69
-## 10         10      F      6.0     61</code></pre>
-<pre class="r"><code># 3. Structure and content
-str(shoes)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    10 obs. of  4 variables:
-##  $ Respondent: int  1 2 3 4 5 6 7 8 9 10
-##  $ Gender    : chr  &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;M&quot; ...
-##  $ ShoeSize  : num  10.5 7 11 9.5 6.5 8 12 7.5 10 6
-##  $ Height    : int  70 64 72 68 62 65 74 63 69 61</code></pre>
-<pre class="r"><code># 4. Inspect dimensions
-dim(shoes)</code></pre>
-<pre><code>## [1] 10  4</code></pre>
-<pre class="r"><code>nrow(shoes)</code></pre>
-<pre><code>## [1] 10</code></pre>
-<pre class="r"><code>ncol(shoes)</code></pre>
-<pre><code>## [1] 4</code></pre>
-<pre class="r"><code># 5. Summary statistics
-summary(shoes)</code></pre>
-<pre><code>##    Respondent          Gender      ShoeSize          Height     
-##  Min.   : 1.00   Length   :10   Min.   : 6.000   Min.   :61.00  
-##  1st Qu.: 3.25   N.unique : 2   1st Qu.: 7.125   1st Qu.:63.25  
-##  Median : 5.50   N.blank  : 0   Median : 8.750   Median :66.50  
-##  Mean   : 5.50   Min.nchar: 1   Mean   : 8.800   Mean   :66.80  
-##  3rd Qu.: 7.75   Max.nchar: 1   3rd Qu.:10.375   3rd Qu.:69.75  
-##  Max.   :10.00                  Max.   :12.000   Max.   :74.00</code></pre>
-<pre class="r"><code># 6. Subset by males and females
-males_subset &lt;- subset(shoes, Gender == &quot;M&quot;)
-males_subset</code></pre>
-<pre><code>##   Respondent Gender ShoeSize Height
-## 1          1      M     10.5     70
-## 3          3      M     11.0     72
-## 4          4      M      9.5     68
-## 7          7      M     12.0     74
-## 9          9      M     10.0     69</code></pre>
-<pre class="r"><code>females_subset &lt;- subset(shoes, Gender == &quot;F&quot;)
-females_subset</code></pre>
-<pre><code>##    Respondent Gender ShoeSize Height
-## 2           2      F      7.0     64
-## 5           5      F      6.5     62
-## 6           6      F      8.0     65
-## 8           8      F      7.5     63
-## 10         10      F      6.0     61</code></pre>
-<pre class="r"><code># 7. Find means of shoe size and height
-# Overall means
-mean(shoes$ShoeSize)</code></pre>
-<pre><code>## [1] 8.8</code></pre>
-<pre class="r"><code>mean(shoes$Height)</code></pre>
-<pre><code>## [1] 66.8</code></pre>
-<pre class="r"><code># Male means
-mean(males_subset$ShoeSize)</code></pre>
-<pre><code>## [1] 10.6</code></pre>
-<pre class="r"><code>mean(males_subset$Height)</code></pre>
-<pre><code>## [1] 70.6</code></pre>
-<pre class="r"><code># Female means
-mean(females_subset$ShoeSize)</code></pre>
-<pre><code>## [1] 7</code></pre>
-<pre class="r"><code>mean(females_subset$Height)</code></pre>
-<pre><code>## [1] 63</code></pre>
-<ul>
-<li><p>Answer 1: I created the <code>shoes_data</code> data frame with
-10 respondents and exported it to a local CSV file named
-<code>shoesize.csv</code>.</p></li>
-<li><p>Answer 2: Using <code>read.csv()</code>, I imported the file back
-into R and ran <code>tail(shoes, n = 5)</code> to show the bottom 5
-rows.</p></li>
-<li><p>Answer 3: The <code>str()</code> function shows that the dataset
-has 10 observations across 4 variables (<code>Respondent</code>,
-<code>Gender</code>, <code>ShoeSize</code>, and
-<code>Height</code>).</p></li>
-<li><p>Answer 4: Checking <code>dim(shoes)</code> shows 10 rows and 4
-columns in total (<code>nrow = 10</code>,
-<code>ncol = 4</code>).</p></li>
-<li><p>Answer 5: The main difference is that <code>str()</code> shows
-the technical structure and data types of the variables, while
-<code>summary()</code> gives numerical summary stats like minimum,
-maximum, mean, and quartile values for each column.</p></li>
-<li><p>Answer 6: I created two separate subsets using
-<code>subset()</code>. The male subset contains 5 respondents and the
-female subset contains 5 respondents.</p></li>
-<li><p>Answer 7: The overall mean shoe size is 8.8 and mean height is
-66.8 inches. For males, the mean shoe size is 10.5 and mean height is
-70.6 inches. For females, the mean shoe size is 7.0 and mean height is
-63.0 inches.</p></li>
-<li><p>Answer 8: Yes, there is a positive relationship between shoe size
-and height. Looking at the output, taller respondents consistently have
-larger shoe sizes to help support their taller frame.</p></li>
-</ul>
-<hr />
-<ul>
-<li>Question #2</li>
-</ul>
-<pre class="r"><code># Convert Gender to factor
-shoes$Gender &lt;- factor(shoes$Gender, levels = c(&quot;M&quot;, &quot;F&quot;), labels = c(&quot;Male&quot;, &quot;Female&quot;))
-str(shoes$Gender)</code></pre>
-<pre><code>##  Factor w/ 2 levels &quot;Male&quot;,&quot;Female&quot;: 1 2 1 1 2 2 1 2 1 2</code></pre>
-<pre class="r"><code>summary(shoes$Gender)</code></pre>
-<pre><code>##   Male Female 
-##      5      5</code></pre>
-<ul>
-<li>Answer: I converted <code>Gender</code> into a factor with levels
-<code>&quot;Male&quot;</code> and <code>&quot;Female&quot;</code>. Running
-<code>summary()</code> on it now gives an exact count of 5 Males and 5
-Females.</li>
-</ul>
-<hr />
-<ul>
-<li>Question #3</li>
-<li>Answer: Using the folder containing the <code>.Rmd</code> file as
-the working directory makes imports more reliable because it relies on
-relative paths. When I share the file with someone else, R Markdown
-looks for <code>shoesize.csv</code> right in the same folder instead of
-looking for a fixed path on my personal computer.</li>
-</ul>
-<hr />
-<ul>
-<li>Question #4</li>
-<li>Answer: Initially R imported <code>Gender</code> as a character type
-(<code>chr</code>). If a numeric column like <code>ShoeSize</code>
-accidentally got imported as character text due to a typo or stray
-symbol, R would treat the numbers as plain text and refuse to perform
-math functions like <code>mean()</code> or <code>cor()</code>.</li>
-</ul>
-<hr />
-<ul>
-<li>Question #5</li>
-<li>Answer: It is good practice to check both because
-<code>head()</code> only shows the top few rows. Checking
-<code>tail()</code> helps catch errors at the bottom of the file like
-empty trailing rows, corrupted records, or extra text added during file
-exports.</li>
-</ul>
-<hr />
-<ul>
-<li>Question #6</li>
-</ul>
-<pre class="r"><code># Compute correlation between shoe size and height
-cor(shoes$ShoeSize, shoes$Height)</code></pre>
-<pre><code>## [1] 0.9915806</code></pre>
-<pre class="r"><code># Return all rows where ShoeSize &gt;= 11
-subset(shoes, ShoeSize &gt;= 11)</code></pre>
-<pre><code>##   Respondent Gender ShoeSize Height
-## 3          3   Male       11     72
-## 7          7   Male       12     74</code></pre>
-<ul>
-<li>Answer 1: The correlation between shoe size and height across all
-observations is approximately <code>0.975</code>, showing a very strong
-positive correlation.</li>
-<li>Answer 2: Using <code>subset(shoes, ShoeSize &gt;= 11)</code>
-returned rows 3 and 7 (respondents with shoe sizes 11.0 and 12.0).</li>
-</ul>
-<hr />
-<ul>
-<li>Question #7</li>
-<li>Answer: Comparing the subsets shows that males have a higher average
-height (70.6 inches) and shoe size (10.5) than females (63.0 inches
-height and 7.0 shoe size). This dataset shows that gender is an
-important factor to account for separately because average physical
-dimensions differ significantly between gender groups.</li>
-</ul>
-<hr />
+students_all &lt;- rbind(students, new_students)
+students_all</code></pre>
+<pre><code>##    id  name sex section midterm final attendance average passed      standing
+## 1   1 Alice   F       A      78    82         95    80.0   TRUE          Good
+## 2   2 Bruno   M       B      85    79         88    82.0   TRUE          Good
+## 3   3  Chen   M       A      92    96        100    94.0   TRUE        Honors
+## 4   4  Dana   F       C      67    71         72    69.0  FALSE Needs Support
+## 5   5  Elif   F       B      74    80         90    77.0   TRUE          Good
+## 6   6 Farid   M       C      88    91         85    89.5   TRUE          Good
+## 7   7 Grace   F       A      95    93         98    94.0   TRUE        Honors
+## 8   8  Hiro   M       B      59    65         60    62.0  FALSE Needs Support
+## 9   9  Ines   F       C      81    84         92    82.5   TRUE          Good
+## 10 10 Jamal   M       A      70    68         80    69.0  FALSE Needs Support</code></pre>
+<p>C2 Create the numeric vector quiz &lt;- c(8, 7, 10, 6, 7, 9, 10, 5,
+8, 6). Use cbind() to attach it to students_all as a column named quiz.
+Confirm the result is still a data frame with class().</p>
+<pre class="r"><code>quiz &lt;- c(8, 7, 10, 6, 7, 9, 10, 5, 8, 6)
+students_all &lt;- cbind(students_all, quiz)
+class(students_all)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>students_all</code></pre>
+<pre><code>##    id  name sex section midterm final attendance average passed      standing
+## 1   1 Alice   F       A      78    82         95    80.0   TRUE          Good
+## 2   2 Bruno   M       B      85    79         88    82.0   TRUE          Good
+## 3   3  Chen   M       A      92    96        100    94.0   TRUE        Honors
+## 4   4  Dana   F       C      67    71         72    69.0  FALSE Needs Support
+## 5   5  Elif   F       B      74    80         90    77.0   TRUE          Good
+## 6   6 Farid   M       C      88    91         85    89.5   TRUE          Good
+## 7   7 Grace   F       A      95    93         98    94.0   TRUE        Honors
+## 8   8  Hiro   M       B      59    65         60    62.0  FALSE Needs Support
+## 9   9  Ines   F       C      81    84         92    82.5   TRUE          Good
+## 10 10 Jamal   M       A      70    68         80    69.0  FALSE Needs Support
+##    quiz
+## 1     8
+## 2     7
+## 3    10
+## 4     6
+## 5     7
+## 6     9
+## 7    10
+## 8     5
+## 9     8
+## 10    6</code></pre>
+<p>C3 Create the matrix m &lt;- cbind(midterm = students_all<span class="math inline">\(midterm, final = students_all\)</span>final) and
+use rbind() to append a final row containing the column means, labelled
+“mean”.</p>
+<pre class="r"><code>m &lt;- cbind(midterm = students_all$midterm, final = students_all$final)
+m_with_mean &lt;- rbind(m, mean = colMeans(m))
+m_with_mean</code></pre>
+<pre><code>##      midterm final
+##         78.0  82.0
+##         85.0  79.0
+##         92.0  96.0
+##         67.0  71.0
+##         74.0  80.0
+##         88.0  91.0
+##         95.0  93.0
+##         59.0  65.0
+##         81.0  84.0
+##         70.0  68.0
+## mean    78.9  80.9</code></pre>
+<p>C4 In a comment (2-3 sentences), explain what error rbind() produces
+if the data frames have different column names, and show the output if
+you safely catch it with tryCatch() tryCatch(rbind(students, bad), error
+= function(e) { message(“rbind failed:”, conditionMessage(e));</p>
+<pre class="r"><code>bad &lt;- data.frame(id = 11, student_name = &quot;Katy&quot;) # Incorrect column name
+
+tryCatch(
+  rbind(students, bad),
+  error = function(e) {
+    message(&quot;rbind failed: &quot;, conditionMessage(e))
+    NULL
+  }
+)</code></pre>
+<pre><code>## rbind failed: numbers of columns of arguments do not match</code></pre>
+<pre><code>## NULL</code></pre>
+<pre><code>The rbind() requires all data frames that is being combined to have matching column names and structures. When column names are different from one another, for example,student_name vs name, R cannot map the rows automatically and it doesnt match.</code></pre>
+<p>Part D: Subsetting</p>
+<p>Use students_all (with quiz) for all questions. Print every result.
+D1 Extract the name column in three ways: $, [[“name”]], and [ ,
+“name”].</p>
+<pre class="r"><code>students_all$name</code></pre>
+<pre><code>##  [1] &quot;Alice&quot; &quot;Bruno&quot; &quot;Chen&quot;  &quot;Dana&quot;  &quot;Elif&quot;  &quot;Farid&quot; &quot;Grace&quot; &quot;Hiro&quot;  &quot;Ines&quot; 
+## [10] &quot;Jamal&quot;</code></pre>
+<pre class="r"><code>students_all[[&quot;name&quot;]]</code></pre>
+<pre><code>##  [1] &quot;Alice&quot; &quot;Bruno&quot; &quot;Chen&quot;  &quot;Dana&quot;  &quot;Elif&quot;  &quot;Farid&quot; &quot;Grace&quot; &quot;Hiro&quot;  &quot;Ines&quot; 
+## [10] &quot;Jamal&quot;</code></pre>
+<pre class="r"><code>students_all[, &quot;name&quot;]</code></pre>
+<pre><code>##  [1] &quot;Alice&quot; &quot;Bruno&quot; &quot;Chen&quot;  &quot;Dana&quot;  &quot;Elif&quot;  &quot;Farid&quot; &quot;Grace&quot; &quot;Hiro&quot;  &quot;Ines&quot; 
+## [10] &quot;Jamal&quot;</code></pre>
+<p>D2 Extract rows 2 to 5 and only the columns name, midterm, final.</p>
+<pre class="r"><code>students_all[2:5, c(&quot;name&quot;, &quot;midterm&quot;, &quot;final&quot;)]</code></pre>
+<pre><code>##    name midterm final
+## 2 Bruno      85    79
+## 3  Chen      92    96
+## 4  Dana      67    71
+## 5  Elif      74    80</code></pre>
+<p>D3 Using logical subsetting, select students withattendance’ above
+90.</p>
+<pre class="r"><code>students_all[students_all$attendance &gt; 90, ]</code></pre>
+<pre><code>##   id  name sex section midterm final attendance average passed standing quiz
+## 1  1 Alice   F       A      78    82         95    80.0   TRUE     Good    8
+## 3  3  Chen   M       A      92    96        100    94.0   TRUE   Honors   10
+## 7  7 Grace   F       A      95    93         98    94.0   TRUE   Honors   10
+## 9  9  Ines   F       C      81    84         92    82.5   TRUE     Good    8</code></pre>
+<p>D4 Using subset(), select students of sex “F” in section “A” or “C”
+whose final is at least 75; return only name, section and final.</p>
+<pre class="r"><code>subset(
+  students_all,
+  sex == &quot;F&quot; &amp; (section == &quot;A&quot; | section == &quot;C&quot;) &amp; final &gt;= 75,
+  select = c(&quot;name&quot;, &quot;section&quot;, &quot;final&quot;)
+)</code></pre>
+<pre><code>##    name section final
+## 1 Alice       A    82
+## 7 Grace       A    93
+## 9  Ines       C    84</code></pre>
+<p>D5 Use which.max() and which.min() to report the name of the student
+with the highest and lowest average.</p>
+<pre class="r"><code># For the student with the highest average
+students_all$name[which.max(students_all$average)]</code></pre>
+<pre><code>## [1] &quot;Chen&quot;</code></pre>
+<pre class="r"><code># For the student with the lowest average
+students_all$name[which.min(students_all$average)]</code></pre>
+<pre><code>## [1] &quot;Hiro&quot;</code></pre>
+<p>D6 Sort students_all by average in descending order, then print the
+top 3 rows.</p>
+<pre class="r"><code>students_sorted &lt;- students_all[order(-students_all$average), ]
+head(students_sorted, 3)</code></pre>
+<pre><code>##   id  name sex section midterm final attendance average passed standing quiz
+## 3  3  Chen   M       A      92    96        100    94.0   TRUE   Honors   10
+## 7  7 Grace   F       A      95    93         98    94.0   TRUE   Honors   10
+## 6  6 Farid   M       C      88    91         85    89.5   TRUE     Good    9</code></pre>
 </div>
-<div id="conclusion" class="section level2">
-<h2>Conclusion</h2>
-<p>Importing external CSV data into R using <code>read.csv()</code> is
-essential for analyzing real-world datasets. Working with factors,
-computing summary statistics, subsetting data, and finding correlation
-values allows us to identify meaningful relationships between physical
-traits like height and shoe size across different demographic
-groups.</p>
+<div id="part-e-basic-factors" class="section level2">
+<h2>Part E: Basic Factors</h2>
+<p>E1 Convert section and sex in students_all to factors with factor().
+Print levels() of each.</p>
+<pre class="r"><code>students_all$section &lt;- factor(students_all$section)
+students_all$sex &lt;- factor(students_all$sex)
+
+levels(students_all$section)</code></pre>
+<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
+<pre class="r"><code>levels(students_all$sex)</code></pre>
+<pre><code>## [1] &quot;F&quot; &quot;M&quot;</code></pre>
+<p>E2 Use table() to count students per sex and per section. *Try the
+two-way table of sex by section. table(students_all<span class="math inline">\(sex, students_all\)</span>section). What is the
+output?</p>
+<pre class="r"><code>table(students_all$sex, students_all$section)</code></pre>
+<pre><code>##    
+##     A B C
+##   F 2 1 2
+##   M 2 2 1</code></pre>
+<p>E3 Print as. integer() of the sex factor. In a comment, explain what
+the integers represent.</p>
+<pre class="r"><code>as.integer(students_all$sex)</code></pre>
+<pre><code>##  [1] 1 2 2 1 1 2 1 2 1 2</code></pre>
+<pre class="r"><code># Underneath factor labels, R stores levels as integer values corresponding to alphabetical order of the levels (1 for &quot;F&quot; and 2 for &quot;M&quot;).</code></pre>
+<p>E4 Create a new factor sex_label from sex using factor() with levels
+= c(“F”, “M”) and labels = c(“Female”, “Male”). Add it to students_all
+and print its levels().</p>
+<p>E5 Print summary() of sex_label. Then, using logical subsetting and
+mean(), print the mean average for each level of sex_label. ```</p>
 </div>
 
 

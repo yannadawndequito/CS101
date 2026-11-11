@@ -1,137 +1,268 @@
 ---
-title: 'R Lab: Basic Operations of R Programming'
+title: "RPractical_Domael"
 author: "Yanna Dawn Dequito"
-date: "2026-11-04"
+date: "2026-11-11"
 output:
   pdf_document: default
   html_document: default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+## Part A: basic Operations
+
+A1 Create v as the sequence 5, 10, 15, ..., 50 using seq(). Print its length, sume and mean.
+```{r}
+v <- seq(5, 50, by=5)
+length(v)
+sum(v)
+mean(v)
+```
+
+A2 Create w that repeats the vector c(1, 2, 3) four times, and z that repeats each element of c (1,2, 3) four times. Print both.
+```{r}
+w <- rep(c(1, 2, 3), times = 4)
+z <- rep(c(1, 2, 3), each = 4)
+w
+z
+```
+
+A3 Compute and print: the remainder of 17 divided by 5, the integer division of 17 by 5, 2 to the power of 10, the square root of 144, and pi rounded to 3 decimals.
+```{r}
+17 %% 5      
+17 %/% 5      
+2^10          
+sqrt(144)    
+round(pi, 3)  
+```
+
+A4 Given a <- c(2, 4, 6, 8) and b<- c(1,3,5,7), print a + b, a * b the logical comparison a > b, and the dot product sum (a * b) .
+```{r}
+a <- c(2, 4, 6, 8)
+b <- c(1, 3, 5, 7)
+
+a + b
+a * b
+a > b
+sum(a * b)
+```
+
+A5 Use paste() to produce "Student-1" "Student-2" "Student-3". Then identifying the datatype of 42, 42L, "42", 4li, and TRUE. What are its output?
+```{r}
+paste("Student", 1:3, sep = "-")
+
+class(42)
+class(42L)
+class("42")
+class(411)
+class(TRUE)
+```
+    The output for the paste("Student", 1:3, sep = "-") is "Student-1" "Student-2" "Student-3", for the class(42) the output is "numeric", for the class(42L) the output is "integer", the output for class("42") is "character", for the class(411) the output is "numeric" and the output for class(TRUE) is "logical".
+   
+## Part B: Data Frames and Conditional Statements
+
+B1 Create a data frame students with 8 rows and these columns (use stringsAsFactors = FALSE; sex is "M" or "F"):
+```{r}
+students <- data.frame(
+  id = 1:8,
+  name = c("Alice", "Bruno", "Chen", "Dana", "Elif", "Farid", "Grace", "Hiro"),
+  sex = c("F", "M", "M", "F", "F", "M", "F", "M"),
+  section = c("A", "B", "A", "C", "B", "C", "A", "B"),
+  midterm = c(78, 85, 92, 67, 74, 88, 95, 59),
+  final = c(82, 79, 96, 71, 80, 91, 93, 65),
+  attendance = c(95, 88, 100, 72, 90, 85, 98, 60),
+  stringsAsFactors = FALSE
+)
+students
+```
+
+B2 Display the structure, dimensions, colums names, and summary of students.
+```{r}
+str(students)
+dim(students)
+colnames(students)
+summary(students)
 
 ```
 
-## Part A — Working with External Data & Data Frames
+B3 Add a column average = mean of midterm and final for each student, rounded to 1 decimal.
+```{r}
+students$average <- round(rowMeans(students[, c("midterm", "final")]), 1)
+students
+```
 
-* Question #1
+B4 Add a logical column passed that is TRUE when average >= 70 and attendance >= 75.
+```{r}
+students$passed <- students$average >= 72 & students$attendance >= 75
+students
+```
 
-```{r q1-shoe-data}
-# 1. Create shoe size and height data frame and export to CSV
-shoes_data <- data.frame(
-  Respondent = 1:10,
-  Gender = c("M", "F", "M", "M", "F", "F", "M", "F", "M", "F"),
-  ShoeSize = c(10.5, 7.0, 11.0, 9.5, 6.5, 8.0, 12.0, 7.5, 10.0, 6.0),
-  Height = c(70, 64, 72, 68, 62, 65, 74, 63, 69, 61)
+B5 Using ifelse(), add a column standing with these values based on average:
+* "Honors" if average >= 90
+* "Good" if average >= 75 (and below)
+* "Needs Support" otherwise
+```{r}
+students$standing <- ifelse(students$average >= 90, "Honors",
+                     ifelse(students$average >= 75, "Good", "Needs Support"))
+students
+```
+
+B6 Write a function classifying(score) that uses an if/ elde if/ else/ chain and returns "Distinction" for 85 or above, "Merit" for 70 to 84. "Pass" for 50 to 69, and "Fail" below 50. Test it with sapply (c(90, 73, 55, 40), classify) and print the result.
+```{r}
+classify <- function(score) {
+  if (score >= 85) {
+    return("Distinction")
+  } else if (score >= 70) {
+    return("Merit")
+  } else if (score >= 50) {
+    return("Pass")
+  } else {
+    return("Fail")
+  }
+}
+
+sapply(c(90, 73, 55, 40), classify)
+
+```
+
+## Part C: rbind() and cbind()
+
+C1 Create a data frame new_students with two students. Its columns must match the original, including
+average, passed and standing, computed the same way:
+
+* id 9, Ines, F, section C, midterm 81, final 84, attendance 92
+* id 10, Jamal, M, section A, midterm 70, final 68, attendance 80
+
+Use rbind() to append them to students, saving the result as students_all.
+```{r}
+new_students <- data.frame(
+  id = c(9, 10),
+  name = c("Ines", "Jamal"),
+  sex = c("F", "M"),
+  section = c("C", "A"),
+  midterm = c(81, 70),
+  final = c(84, 68),
+  attendance = c(92, 80),
+  stringsAsFactors = FALSE
 )
 
-write.csv(shoes_data, file = "shoesize.csv", row.names = FALSE)
+new_students$average <- round(rowMeans(new_students[, c("midterm", "final")]), 1)
+new_students$passed <- new_students$average >= 72 & new_students$attendance >= 75
+new_students$standing <- ifelse(new_students$average >= 90, "Honors",
+                         ifelse(new_students$average >= 75, "Good", "Needs Support"))
 
-# 2. Import CSV and display last 5 rows
-shoes <- read.csv("shoesize.csv")
-tail(shoes, n = 5)
+students_all <- rbind(students, new_students)
+students_all
+```
 
-# 3. Structure and content
-str(shoes)
+C2 Create the numeric vector quiz <- c(8, 7, 10, 6, 7, 9, 10, 5, 8, 6). Use cbind() to attach it
+to students_all as a column named quiz. Confirm the result is still a data frame with class().
+```{r}
+quiz <- c(8, 7, 10, 6, 7, 9, 10, 5, 8, 6)
+students_all <- cbind(students_all, quiz)
+class(students_all)
+students_all
+```
 
-# 4. Inspect dimensions
-dim(shoes)
-nrow(shoes)
-ncol(shoes)
+C3 Create the matrix m <- cbind(midterm = students_all$midterm, final = students_all$final)
+and use rbind() to append a final row containing the column means, labelled "mean".
+```{r}
+m <- cbind(midterm = students_all$midterm, final = students_all$final)
+m_with_mean <- rbind(m, mean = colMeans(m))
+m_with_mean
+```
 
-# 5. Summary statistics
-summary(shoes)
+C4 In a comment (2-3 sentences), explain what error rbind() produces if the data frames have different
+column names, and show the output if you safely catch it with tryCatch()
+tryCatch(rbind(students, bad), error = function(e) { message("rbind failed: ", conditionMessage(e));
+```{r}
+bad <- data.frame(id = 11, student_name = "Katy") # Incorrect column name
 
-# 6. Subset by males and females
-males_subset <- subset(shoes, Gender == "M")
-males_subset
+tryCatch(
+  rbind(students, bad),
+  error = function(e) {
+    message("rbind failed: ", conditionMessage(e))
+    NULL
+  }
+)
 
-females_subset <- subset(shoes, Gender == "F")
-females_subset
+```
+    The rbind() requires all data frames that is being combined to have matching column names and structures. When column names are different from one another, for example,student_name vs name, R cannot map the rows automatically and it doesnt match.
 
-# 7. Find means of shoe size and height
-# Overall means
-mean(shoes$ShoeSize)
-mean(shoes$Height)
+Part D: Subsetting
 
-# Male means
-mean(males_subset$ShoeSize)
-mean(males_subset$Height)
+Use students_all (with quiz) for all questions. Print every result.
+D1 Extract the name column in three ways: $, [["name"]], and [ , "name"].
+```{r}
+students_all$name
+students_all[["name"]]
+students_all[, "name"]
+```
 
-# Female means
-mean(females_subset$ShoeSize)
-mean(females_subset$Height)
+D2 Extract rows 2 to 5 and only the columns name, midterm, final.
+```{r}
+students_all[2:5, c("name", "midterm", "final")]
+```
+
+D3 Using logical subsetting, select students withattendance' above 90.
+```{r}
+students_all[students_all$attendance > 90, ]
+```
+
+D4 Using subset(), select students of sex "F" in section "A" or "C" whose final is at least 75; return only
+name, section and final.
+```{r}
+subset(
+  students_all,
+  sex == "F" & (section == "A" | section == "C") & final >= 75,
+  select = c("name", "section", "final")
+)
+```
+
+D5 Use which.max() and which.min() to report the name of the student with the highest and lowest
+average.
+```{r}
+# For the student with the highest average
+students_all$name[which.max(students_all$average)]
+
+# For the student with the lowest average
+students_all$name[which.min(students_all$average)]
+```
+
+D6 Sort students_all by average in descending order, then print the top 3 rows.
+```{r}
+students_sorted <- students_all[order(-students_all$average), ]
+head(students_sorted, 3)
+```
+
+## Part E: Basic Factors
+
+E1 Convert section and sex in students_all to factors with factor(). Print levels() of each.
+```{r}
+students_all$section <- factor(students_all$section)
+students_all$sex <- factor(students_all$sex)
+
+levels(students_all$section)
+levels(students_all$sex)
+```
+
+E2 Use table() to count students per sex and per section.
+*Try the two-way table of sex by section. table(students_all$sex, students_all$section). What is
+the output?
+```{r}
+table(students_all$sex, students_all$section)
+```
+
+E3 Print as. integer() of the sex factor. In a comment, explain what the integers represent.
+```{r}
+as.integer(students_all$sex)
+# Underneath factor labels, R stores levels as integer values corresponding to alphabetical order of the levels (1 for "F" and 2 for "M").
+```
+
+E4 Create a new factor sex_label from sex using factor() with levels = c("F", "M") and labels =
+c("Female", "Male"). Add it to students_all and print its levels().
+```{r}
 
 ```
 
-- Answer 1: I created the `shoes_data` data frame with 10 respondents and exported it to a local CSV file named `shoesize.csv`.
-
-- Answer 2: Using `read.csv()`, I imported the file back into R and ran `tail(shoes, n = 5)` to show the bottom 5 rows.
-
-- Answer 3: The `str()` function shows that the dataset has 10 observations across 4 variables (`Respondent`, `Gender`, `ShoeSize`, and `Height`).
-
-- Answer 4: Checking `dim(shoes)` shows 10 rows and 4 columns in total (`nrow = 10`, `ncol = 4`).
-
-- Answer 5: The main difference is that `str()` shows the technical structure and data types of the variables, while `summary()` gives numerical summary stats like minimum, maximum, mean, and quartile values for each column.
-
-- Answer 6: I created two separate subsets using `subset()`. The male subset contains 5 respondents and the female subset contains 5 respondents.
-
-- Answer 7: The overall mean shoe size is 8.8 and mean height is 66.8 inches. For males, the mean shoe size is 10.5 and mean height is 70.6 inches. For females, the mean shoe size is 7.0 and mean height is 63.0 inches.
-
-- Answer 8: Yes, there is a positive relationship between shoe size and height. Looking at the output, taller respondents consistently have larger shoe sizes to help support their taller frame.
-
----
-
-- Question #2
-
-```{r q2-gender-factor}
-# Convert Gender to factor
-shoes$Gender <- factor(shoes$Gender, levels = c("M", "F"), labels = c("Male", "Female"))
-str(shoes$Gender)
-summary(shoes$Gender)
-
+E5 Print summary() of sex_label. Then, using logical subsetting and mean(), print the mean average for
+each level of sex_label.
 ```
-
-- Answer: I converted `Gender` into a factor with levels `"Male"` and `"Female"`. Running `summary()` on it now gives an exact count of 5 Males and 5 Females.
-
----
-
-- Question #3
-- Answer: Using the folder containing the `.Rmd` file as the working directory makes imports more reliable because it relies on relative paths. When I share the file with someone else, R Markdown looks for `shoesize.csv` right in the same folder instead of looking for a fixed path on my personal computer.
-
----
-
-- Question #4
-- Answer: Initially R imported `Gender` as a character type (`chr`). If a numeric column like `ShoeSize` accidentally got imported as character text due to a typo or stray symbol, R would treat the numbers as plain text and refuse to perform math functions like `mean()` or `cor()`.
-
----
-
-- Question #5
-- Answer: It is good practice to check both because `head()` only shows the top few rows. Checking `tail()` helps catch errors at the bottom of the file like empty trailing rows, corrupted records, or extra text added during file exports.
-
----
-
-- Question #6
-
-```{r q6-cor-and-subset}
-# Compute correlation between shoe size and height
-cor(shoes$ShoeSize, shoes$Height)
-
-# Return all rows where ShoeSize >= 11
-subset(shoes, ShoeSize >= 11)
-
-```
-
-- Answer 1: The correlation between shoe size and height across all observations is approximately `0.975`, showing a very strong positive correlation.
-- Answer 2: Using `subset(shoes, ShoeSize >= 11)` returned rows 3 and 7 (respondents with shoe sizes 11.0 and 12.0).
-
----
-
-- Question #7
-- Answer: Comparing the subsets shows that males have a higher average height (70.6 inches) and shoe size (10.5) than females (63.0 inches height and 7.0 shoe size). This dataset shows that gender is an important factor to account for separately because average physical dimensions differ significantly between gender groups.
-
----
-
-## Conclusion
-
-Importing external CSV data into R using `read.csv()` is essential for analyzing real-world datasets. Working with factors, computing summary statistics, subsetting data, and finding correlation values allows us to identify meaningful relationships between physical traits like height and shoe size across different demographic groups.
