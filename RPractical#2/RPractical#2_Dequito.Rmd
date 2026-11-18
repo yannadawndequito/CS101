@@ -1,0 +1,195 @@
+---
+title: "R Programming Practical Examination #2"
+author: "Yanna Dawn Dequito"
+date: "2026-11-18"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+## Part A: Importing and Inspecting a CSV
+
+#### A1 Import employees.csv into a data frame named emp_df using read.csv() with stringsAsFactors = FALSE.
+```{r}
+emp_df <- read.csv("employees.csv", stringsAsFactors = FALSE)
+```
+
+#### A2 Display the structure, the first 5 rows, and summary of emp_df.
+```{r}
+str(emp_df)
+head(emp_df, 5)
+summary(emp_df)
+```
+
+#### A3 Print the number of rows and the number of columns of emp_df, and the class of every column (hint:sapply(emp_df, class)).
+```{r}
+nrow(emp_df)
+ncol(emp_df)
+sapply(emp_df, class)
+```
+
+#### A4 Print the mean salary, the maximum age, and the number of employees in each department using table().
+```{r}
+mean(emp_df$salary)
+max(emp_df$age)
+table(emp_df$department)
+```
+
+## Part B: Creating Data Frames
+
+#### B1 Create a data frame new_hires with the same column names as emp_df and these three employees:
+```{r}
+new_hires <- data.frame(
+emp_id = c(21, 22, 23),
+name = c("Uma", "Victor", "Wen"),
+department = c("HR", "IT", "Sales"),
+sex = c("F", "M", "F"),
+age = c(28, 37, 33),
+salary = c(45000, 83000, 60000),
+years_service = c(2, 9, 6),
+rating = c(3, 4, 5),
+stringsAsFactors = FALSE
+)
+new_hires
+```
+
+#### B2 Use rbind() to append new_hires to emp_df, saving the result as emp_all. Print the dimensions of emp_all.
+```{r}
+emp_all <- rbind(emp_df, new_hires)
+dim(emp_all)
+```
+
+#### B3 Add a column bonus to emp_all equal to 5% of salary, rounded to the nearest whole number.
+```{r}
+emp_all$bonus <- round(emp_all$salary * 0.05)
+head(emp_all)
+```
+
+## Part C: Subsetting
+
+#### C1 Extract the first 5 rows and only the columns name and salary, using numeric or name indexing.
+```{r}
+emp_all[1:5, c("name", "salary")]
+```
+
+#### C2 Using logical subsetting, select all employees with salary greater than 70000.
+```{r}
+emp_all[emp_all$salary > 70000, ]
+```
+
+#### C3 Using subset function, select employees in the "IT" department with years_service of at least 5. Return only name, years_service and salary.
+```{r}
+subset(emp_all,
+department == "IT" & years_service >= 5,
+select = c(name, years_service, salary))
+```
+
+#### C4 Use which() to print the row numbers of employees older than 50, then print their names.
+```{r}
+idx <- which(emp_all$age > 50)
+idx
+emp_all$name[idx]
+```
+
+#### C5 Remove the columns emp_id and bonus using negative indexing. Do not overwrite emp_all; print the first 3 rows of the result.
+```{r}
+no_id_bonus <- emp_all[, -which(names(emp_all) %in% c("emp_id", "bonus"))]
+head(no_id_bonus, 3)
+```
+
+#### C6 (2) Using logical indexing, print the salary of the employee whose name is "Mia".
+```{r}
+emp_all$salary[emp_all$name == "Mia"]
+```
+
+## Part D: Factors
+
+#### D1 Convert department and sex in emp_all to factors with factor(). Print levels() of each.
+```{r}
+emp_all$department <- factor(emp_all$department)
+emp_all$sex <- factor(emp_all$sex)
+levels(emp_all$department)
+levels(emp_all$sex)
+```
+
+#### D2 Use table() to count employees per department, and make a two-way table of department by 'sex.
+```{r}
+table(emp_all$department)
+table(emp_all$department, emp_all$sex)
+```
+
+#### D3 Create an ordered factor rating_level from rating using factor() with levels = 1:5 and labels = c("Poor", "Fair", "Good", "Very Good", "Excellent"). Add it to emp_all and print table(emp_all$rating_level)
+```{r}
+emp_all$rating_level <- factor(emp_all$rating,
+levels = 1:5,
+labels = c("Poor", "Fair", "Good", "Very Good", "Excellent"),
+ordered = TRUE)
+table(emp_all$rating_level)
+```
+
+#### D4 Using a for loop over levels(emp_all$department) and logical subsetting, print the mean salary of each department, rounded to the nearest whole number.
+```{r}
+for (d in levels(emp_all$department)) {
+avg <- round(mean(emp_all$salary[emp_all$department == d]))
+print(paste(d, ":", avg))
+}
+```
+
+## Part E: Conditional Statements
+
+#### E1 Using nested ifelse(), add a column salary_band to emp_all: "High" if salary >= 70000, "Medium" if salary >= 50000 (and below 70000), otherwise "Low". Print table(emp_all$salary_band) ..
+```{r}
+emp_all$salary_band <- ifelse(emp_all$salary >= 70000, "High",
+ifelse(emp_all$salary >= 50000, "Medium", "Low"))
+table(emp_all$salary_band)
+```
+
+#### E2 Using ifelse(), add a column level to emp_all: "Senior" if years_service >= 8, otherwise "Junior". Print table(emp_all$level)
+```{r}
+emp_all$level <- ifelse(emp_all$years_service >= 8, "Senior", "Junior")
+table(emp_all$level)
+```
+
+#### E3 Write a function raise_pct(rating) that uses an if / else if / else chain and returns 0.10 for a rating of 5, 0.07 for 4, 0.04 for 3, and 0 otherwise. Use sapply() to apply it to emp_all$rating, saving the result as a column raise. Then add new_salary = round(salary * (1 + raise)). Print the first 5 rows of name, rating, raise, new_salary.
+```{r}
+raise_pct <- function(rating) {
+if (rating == 5) {
+0.10
+} else if (rating == 4) {
+0.07
+} else if (rating == 3) {
+0.04
+} else {
+0
+}
+}
+
+emp_all$raise <- sapply(emp_all$rating, raise_pct)
+emp_all$new_salary <- round(emp_all$salary * (1 + emp_all$raise))
+head(emp_all[, c("name", "rating", "raise", "new_salary")], 5)
+```
+
+#### E4 Using an if / else statement (not ifelse()), compute total <- sum(emp_all$new_salary) and print "Budget OK" if the total is below 1,600,000, otherwise print "Over budget". Also print the total ..
+```{r}
+total <- sum(emp_all$new_salary)
+if (total < 1600000) {
+print("Budget OK")
+} else {
+print("Over budget")
+}
+total
+```
+
+## Part F: Conditional Statements
+
+#### F1 Use sort() to print the 5 highest salary values in decreasing order, and the first 5 employee name values in alphabetical order.
+```{r}
+sort(emp_all$salary, decreasing = TRUE)[1:5]
+sort(as.character(emp_all$name))[1:5]
+```
+
+#### F2 Use order() to sort emp_all by salary in descending order and print the name, department and salary of the top 5. Save the sorted data frame as 'by_salary.
+```{r}
+by_salary <- emp_all[order(emp_all$salary, decreasing = TRUE), ]
+head(by_salary[, c("name", "department", "salary")], 5)
+```
